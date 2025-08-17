@@ -164,7 +164,7 @@ export default function Home() {
               <select
                 id="tone"
                 value={tone}
-                onChange={(e) => setTone(e.target.value as typeof tone)}
+                onChange={(e) => setTone(e.target.value as 'casual' | 'professional' | 'energetic' | 'academic')}
                 className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 disabled={loading}
               >
@@ -183,7 +183,7 @@ export default function Home() {
               <select
                 id="length"
                 value={length}
-                onChange={(e) => setLength(e.target.value as typeof length)}
+                onChange={(e) => setLength(e.target.value as 'short' | 'medium' | 'long')}
                 className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 disabled={loading}
               >
@@ -201,7 +201,7 @@ export default function Home() {
               <select
                 id="lang"
                 value={lang}
-                onChange={(e) => setLang(e.target.value as typeof lang)}
+                onChange={(e) => setLang(e.target.value as 'tr' | 'en')}
                 className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 disabled={loading}
               >
