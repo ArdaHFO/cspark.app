@@ -1,36 +1,128 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Creator Transformer Frontend
+
+Next.js frontend for the Creator Transformer application. Provides a clean, responsive interface for text extraction and AI-powered content generation.
+
+## Features
+
+- **URL Text Extraction**: Extract clean text from any web page
+- **AI Content Generation**: Create summaries, YouTube scripts, and Shorts scripts
+- **Responsive Design**: Works on desktop and mobile devices
+- **Real-time Feedback**: Loading states, error handling, and success notifications
+- **Download & Copy**: Easy content export options
+
+## Tech Stack
+
+- **Next.js 14** - React framework with App Router
+- **TypeScript** - Type-safe development
+- **Tailwind CSS** - Utility-first styling
+- **React Hooks** - Modern state management
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+ 
+- npm or yarn
+
+### Installation
 
 ```bash
+# Install dependencies
+npm install
+
+# Start development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The application will be available at `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Create a `.env.local` file in the frontend directory:
 
-## Learn More
+```bash
+NEXT_PUBLIC_API_BASE=http://localhost:8000
+```
 
-To learn more about Next.js, take a look at the following resources:
+For production, set this to your deployed backend URL.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Available Scripts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+# Development server
+npm run dev
 
-## Deploy on Vercel
+# Production build
+npm run build
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Start production server
+npm start
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Linting
+npm run lint
+
+# Type checking
+npm run type-check
+```
+
+## Project Structure
+
+```
+src/
+├── app/
+│   ├── globals.css      # Global styles
+│   ├── layout.tsx       # Root layout
+│   ├── page.tsx         # Main page component
+│   └── favicon.ico      # App icon
+└── lib/
+    └── api.ts           # API client functions
+```
+
+## Deployment
+
+### Vercel (Recommended)
+
+1. Push your code to GitHub
+2. Connect your repository to Vercel
+3. Set environment variable: `NEXT_PUBLIC_API_BASE=https://your-backend-url`
+4. Deploy automatically on git push
+
+### Other Platforms
+
+1. Build the project: `npm run build`
+2. Deploy the `.next` folder and `package.json`
+3. Set the environment variable for your backend URL
+
+## Configuration
+
+The app connects to the backend API using the `NEXT_PUBLIC_API_BASE` environment variable. Make sure this points to your deployed backend or local development server.
+
+## Development
+
+### Adding New Features
+
+1. API functions go in `src/lib/api.ts`
+2. UI components can be added to `src/components/` (create this directory as needed)
+3. Global styles are in `src/app/globals.css`
+4. Page-specific styles use Tailwind CSS classes
+
+### Customization
+
+- Modify colors and themes in `tailwind.config.js`
+- Add custom fonts in `src/app/layout.tsx`
+- Extend the API client in `src/lib/api.ts`
+
+## Troubleshooting
+
+### Common Issues
+
+1. **API Connection Error**: Check that `NEXT_PUBLIC_API_BASE` is set correctly
+2. **Build Errors**: Ensure all TypeScript types are correct
+3. **Styling Issues**: Verify Tailwind CSS classes are properly applied
+
+### Support
+
+For issues and questions, please check:
+1. The main project README
+2. Next.js documentation
+3. GitHub issues
