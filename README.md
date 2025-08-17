@@ -1,128 +1,170 @@
-# Creator Transformer Frontend
+# CSpark.app - Creator Transformer
 
-Next.js frontend for the Creator Transformer application. Provides a clean, responsive interface for text extraction and AI-powered content generation.
+Modern AI destekli içerik dönüştürme platformu. Web sitesi, metin ve URL'lerden YouTube videoları, özet, sosyal medya içerikleri ve daha fazlasını oluşturun.
 
-## Features
+## 🚀 Canlı Demo
 
-- **URL Text Extraction**: Extract clean text from any web page
-- **AI Content Generation**: Create summaries, YouTube scripts, and Shorts scripts
-- **Responsive Design**: Works on desktop and mobile devices
-- **Real-time Feedback**: Loading states, error handling, and success notifications
-- **Download & Copy**: Easy content export options
+**Website:** [www.cspark.app](https://www.cspark.app)
 
-## Tech Stack
+## ✨ Özellikler
 
-- **Next.js 14** - React framework with App Router
-- **TypeScript** - Type-safe development
-- **Tailwind CSS** - Utility-first styling
-- **React Hooks** - Modern state management
+- 🤖 **AI Destekli İçerik Üretimi** - Llama-3.1-8B-Instruct modeli
+- 📱 **Modern UI/UX** - Next.js 15 + Tailwind CSS  
+- 🌐 **URL İçerik Çıkarma** - Web sitelerinden otomatik metin çıkarma
+- 📝 **Çoklu Format Desteği** - YouTube, Shorts, Özet, Sosyal Medya
+- ☁️ **Serverless API** - Vercel API Routes ile ücretsiz hosting
+- 🔒 **Güvenli** - Environment variable'lar ile API güvenliği
 
-## Getting Started
+## 🏗️ Teknoloji Stack
 
-### Prerequisites
+### Frontend
+- **Next.js 15.4.6** - React framework with App Router
+- **React 19.1.0** - UI library
+- **TypeScript 5.9.2** - Type safety
+- **Tailwind CSS 3.4.17** - Styling framework
+- **Lucide React** - Modern icons
 
-- Node.js 18+ 
-- npm or yarn
+### Backend
+- **Vercel API Routes** - Serverless functions
+- **Hugging Face API** - AI model integration  
+- **Node.js 18+** - Runtime environment
 
-### Installation
+### AI Model
+- **meta-llama/Llama-3.1-8B-Instruct** - Content generation
+- **Hugging Face Router** - Model serving
 
+## 🚀 Kurulum ve Çalıştırma
+
+### 1. Proje Klonlama
 ```bash
-# Install dependencies
+git clone https://github.com/ArdaHFO/cspark.app.git
+cd cspark.app
+```
+
+### 2. Dependencies Kurulumu
+```bash
 npm install
+```
 
-# Start development server
+### 3. Environment Variables
+```bash
+# .env.local dosyasını oluşturun
+cp .env.example .env.local
+
+# Hugging Face token'ınızı ekleyin
+HF_API_TOKEN=your_hugging_face_token_here
+```
+
+### 4. Development Server
+```bash
 npm run dev
 ```
 
-The application will be available at `http://localhost:3000`.
+Site: http://localhost:3000
 
-### Environment Variables
+## 🌐 Production Deployment
 
-Create a `.env.local` file in the frontend directory:
+### Vercel Deployment
+
+1. Vercel Dashboard → New Project
+2. GitHub repository'sini seçin
+3. Environment Variables ekleyin:
+   - `HF_API_TOKEN`: Hugging Face API token'ınız
+4. Deploy butonuna tıklayın
+
+### Environment Variables Ayarları
+
+Vercel Dashboard → Settings → Environment Variables:
+
+```
+HF_API_TOKEN=hf_your_token_here
+```
+
+## 📋 API Endpoints
+
+- `GET /api/health` - Sistem sağlık kontrolü
+- `POST /api/generate` - AI içerik üretimi  
+- `POST /api/extract` - URL'den içerik çıkarma
+
+### API Kullanım Örneği
 
 ```bash
-NEXT_PUBLIC_API_BASE=http://localhost:8000
+# İçerik üretimi
+curl -X POST https://www.cspark.app/api/generate \
+  -H "Content-Type: application/json" \
+  -d '{
+    "input": "Yapay zeka hakkında bir metin",
+    "task": "summary", 
+    "lang": "tr"
+  }'
+
+# URL'den içerik çıkarma
+curl -X POST https://www.cspark.app/api/extract \
+  -H "Content-Type: application/json" \
+  -d '{"url": "https://example.com"}'
 ```
 
-For production, set this to your deployed backend URL.
+## 🗂️ Proje Yapısı
 
-## Available Scripts
+```
+cspark.app/
+├── app/                    # Next.js App Router
+│   ├── api/               # Vercel API Routes
+│   │   ├── health/        # Health check endpoint
+│   │   ├── generate/      # AI content generation
+│   │   └── extract/       # URL content extraction
+│   ├── landing/           # Landing page
+│   ├── app/              # Main app interface
+│   ├── layout.tsx        # Root layout
+│   └── page.tsx          # Home page
+├── lib/                   # Utility functions
+│   └── api.ts            # API client
+├── public/               # Static assets
+├── backend/              # Legacy FastAPI backend (optional)
+├── docs/                 # Documentation
+└── package.json          # Dependencies
+```
+
+## 🧪 Test
 
 ```bash
-# Development server
-npm run dev
+# Health check
+curl http://localhost:3000/api/health
 
-# Production build
-npm run build
-
-# Start production server
-npm start
-
-# Linting
-npm run lint
-
-# Type checking
-npm run type-check
+# API test
+npm run test
 ```
 
-## Project Structure
+## 🤖 Desteklenen İçerik Türleri
 
-```
-src/
-├── app/
-│   ├── globals.css      # Global styles
-│   ├── layout.tsx       # Root layout
-│   ├── page.tsx         # Main page component
-│   └── favicon.ico      # App icon
-└── lib/
-    └── api.ts           # API client functions
-```
+- **summary** - Metin özetleme
+- **youtube** - YouTube video senaryosu
+- **shorts** - YouTube Shorts/TikTok içeriği
+- **social** - Sosyal medya paylaşımları
+- **seo** - SEO optimizasyonu
 
-## Deployment
+## 🌍 Dil Desteği
 
-### Vercel (Recommended)
+- **Türkçe** (tr) - Ana dil
+- **İngilizce** (en) - İkincil dil
 
-1. Push your code to GitHub
-2. Connect your repository to Vercel
-3. Set environment variable: `NEXT_PUBLIC_API_BASE=https://your-backend-url`
-4. Deploy automatically on git push
+## 📄 Lisans
 
-### Other Platforms
+Bu proje MIT lisansı altında lisanslanmıştır. Detaylar için [LICENSE](LICENSE) dosyasına bakın.
 
-1. Build the project: `npm run build`
-2. Deploy the `.next` folder and `package.json`
-3. Set the environment variable for your backend URL
+## 🤝 Katkıda Bulunma
 
-## Configuration
+1. Fork edin
+2. Feature branch oluşturun (`git checkout -b feature/amazing-feature`)
+3. Commit edin (`git commit -m 'Add amazing feature'`)
+4. Push edin (`git push origin feature/amazing-feature`)
+5. Pull Request açın
 
-The app connects to the backend API using the `NEXT_PUBLIC_API_BASE` environment variable. Make sure this points to your deployed backend or local development server.
+## 📞 İletişim
 
-## Development
+- **Website:** [www.cspark.app](https://www.cspark.app)
+- **GitHub:** [ArdaHFO/cspark.app](https://github.com/ArdaHFO/cspark.app)
 
-### Adding New Features
+---
 
-1. API functions go in `src/lib/api.ts`
-2. UI components can be added to `src/components/` (create this directory as needed)
-3. Global styles are in `src/app/globals.css`
-4. Page-specific styles use Tailwind CSS classes
-
-### Customization
-
-- Modify colors and themes in `tailwind.config.js`
-- Add custom fonts in `src/app/layout.tsx`
-- Extend the API client in `src/lib/api.ts`
-
-## Troubleshooting
-
-### Common Issues
-
-1. **API Connection Error**: Check that `NEXT_PUBLIC_API_BASE` is set correctly
-2. **Build Errors**: Ensure all TypeScript types are correct
-3. **Styling Issues**: Verify Tailwind CSS classes are properly applied
-
-### Support
-
-For issues and questions, please check:
-1. The main project README
-2. Next.js documentation
-3. GitHub issues
+⭐ Bu projeyi beğendiyseniz yıldız vermeyi unutmayın!

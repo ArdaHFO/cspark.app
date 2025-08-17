@@ -1,9 +1,10 @@
 /**
- * API client for communicating with the Creator Transformer backend
- * Handles all HTTP requests and response parsing
+ * API client for communicating with the Creator Transformer Vercel API
+ * Handles all HTTP requests and response parsing using Next.js API routes
  */
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000';
+// Use Vercel API routes instead of external backend
+const API_BASE = '/api';
 
 /**
  * Base fetch wrapper with error handling
@@ -35,15 +36,21 @@ async function apiFetch(endpoint: string, options: RequestInit = {}) {
 }
 
 /**
- * Extract text from a URL
+ * Extract text from a URL using Vercel API route
  */
-export async function extractText(url: string): Promise<{ text: string }> {
-  const formData = new FormData();
-  formData.append('url', url);
-
+export async function extractText(url: string): Promise<{ 
+  title?: string; 
+  text: string; 
+  description?: string;
+  domain: string;
+  wordCount: number;
+}> {
   const response = await fetch(`${API_BASE}/extract`, {
     method: 'POST',
-    body: formData,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ url }),
   });
 
   if (!response.ok) {
@@ -51,23 +58,31 @@ export async function extractText(url: string): Promise<{ text: string }> {
     throw new Error(errorData.detail || `HTTP ${response.status}: ${response.statusText}`);
   }
 
-  return await response.json();
+  const result = await response.json();
+  
+  if (!result.success) {
+    throw new Error(result.detail || 'Failed to extract text');
+  }
+
+  
+  return result.data;
 }
 
 /**
  * Generate content from text using AI
  */
 export interface GenerateRequest {
-  text: string;
-  mode: 'summary' | 'youtube' | 'shorts';
-  tone: 'neutral' | 'energetic' | 'academic';
-  length: 'short' | 'medium' | 'long';
-  lang: 'auto' | 'tr' | 'en';
+  input: string;
+  task: 'summary' | 'youtube' | 'shorts' | 'social' | 'seo';
+  tone?: 'casual' | 'professional' | 'energetic' | 'academic';
+  length?: 'short' | 'medium' | 'long';
+  lang?: 'tr' | 'en';
+  max_tokens?: number;
+  temperature?: number;
 }
 
 export interface GenerateResponse {
-  output: string;
-  tokens: number;
+  result: string;
 }
 
 export async function generateContent(request: GenerateRequest): Promise<GenerateResponse> {
@@ -75,9 +90,7 @@ export async function generateContent(request: GenerateRequest): Promise<Generat
     method: 'POST',
     body: JSON.stringify(request),
   });
-}
-
-/**
+}/**
  * Health check endpoint
  */
 export async function healthCheck(): Promise<{ ok: boolean }> {
