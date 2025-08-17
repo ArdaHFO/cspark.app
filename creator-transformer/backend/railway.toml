@@ -1,0 +1,5 @@
+# Railway deployment configuration
+PORT=7861
+HF_API_TOKEN=$HF_API_TOKEN
+ALLOWED_ORIGINS=https://www.cspark.app,https://cspark.app,http://localhost:3000
+ENVIRONMENT=production
