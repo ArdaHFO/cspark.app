@@ -12,9 +12,9 @@ export default function Home() {
   const [url, setUrl] = useState('');
   const [text, setText] = useState('');
   const [mode, setMode] = useState<'summary' | 'youtube' | 'shorts'>('summary');
-  const [tone, setTone] = useState<'neutral' | 'energetic' | 'academic'>('neutral');
+  const [tone, setTone] = useState<'casual' | 'professional' | 'energetic' | 'academic'>('casual');
   const [length, setLength] = useState<'short' | 'medium' | 'long'>('medium');
-  const [lang, setLang] = useState<'auto' | 'tr' | 'en'>('auto');
+  const [lang, setLang] = useState<'tr' | 'en'>('tr');
 
   // UI state
   const [result, setResult] = useState('');
@@ -59,8 +59,8 @@ export default function Home() {
     setResult('');
 
     const request: GenerateRequest = {
-      text: text.trim(),
-      mode: selectedMode,
+      input: text.trim(),
+      task: selectedMode,
       tone,
       length,
       lang,
@@ -68,7 +68,7 @@ export default function Home() {
 
     try {
       const response = await generateContent(request);
-      setResult(response.output);
+      setResult(response.result);
       setError('');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to generate content');
@@ -168,7 +168,8 @@ export default function Home() {
                 className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 disabled={loading}
               >
-                <option value="neutral">Neutral</option>
+                <option value="casual">Casual</option>
+                <option value="professional">Professional</option>
                 <option value="energetic">Energetic</option>
                 <option value="academic">Academic</option>
               </select>
@@ -204,9 +205,8 @@ export default function Home() {
                 className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 disabled={loading}
               >
-                <option value="auto">Auto-detect</option>
-                <option value="en">English</option>
                 <option value="tr">Turkish</option>
+                <option value="en">English</option>
               </select>
             </div>
           </div>
