@@ -1,0 +1,10 @@
+title: Creator Transformer
+emoji: 🎬
+colorFrom: blue
+colorTo: purple
+sdk: fastapi
+sdk_version: 0.104.1
+app_file: app.py
+pinned: false
+license: mit
+python_version: 3.10
