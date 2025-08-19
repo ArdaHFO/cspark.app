@@ -143,8 +143,14 @@ function AppContent() {
 
   // Single content generation
   const generateSingleContent = async (task: 'summary' | 'youtube' | 'shorts' | 'social' | 'seo') => {
-    if (!canGenerate()) return;
+    console.log('generateSingleContent called with task:', task);
+    
+    if (!canGenerate()) {
+      console.log('canGenerate() returned false');
+      return;
+    }
 
+    console.log('Starting generation for task:', task);
     setProcessingState('preparing');
     setProgress(20);
     setCurrentTask(`${task} hazırlanıyor...`);
@@ -206,6 +212,7 @@ function AppContent() {
       setTimeout(() => {
         if (task === 'summary') updateStep('generate');
         else if (task === 'youtube' || task === 'shorts') updateStep('seo');
+        else if (task === 'seo') updateStep('social');
         setProcessingState('idle');
         setProgress(0);
         setCurrentTask('');
