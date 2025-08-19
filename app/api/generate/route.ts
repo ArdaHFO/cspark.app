@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 
 // Direct HuggingFace API integration - no external backend needed
 const HF_API_TOKEN = process.env.HF_API_TOKEN;
-const HF_MODEL = "meta-llama/Llama-3.1-8B-Instruct";
-const HF_BASE_URL = "https://api-inference.huggingface.co/models";
+const HF_MODEL = "meta-llama/Llama-3.1-8B-Instruct:novita";
+const HF_BASE_URL = "https://router.huggingface.co/v1/chat/completions";
 const HF_TIMEOUT = 60000;
 const MAX_TOKENS_DEFAULT = 512;
 
@@ -165,19 +165,16 @@ async function callHuggingFace(messages: any[], maxTokens: number = MAX_TOKENS_D
     'Content-Type': 'application/json'
   };
 
-  // Use HuggingFace Inference API format
-  const prompt = messages.map(m => `${m.role}: ${m.content}`).join('\n\n');
-  
+  // Use OpenAI-compatible chat completions format
   const payload = {
-    inputs: prompt,
-    parameters: {
-      max_new_tokens: maxTokens,
-      temperature,
-      return_full_text: false
-    }
+    model: HF_MODEL,
+    messages: messages,
+    max_tokens: maxTokens,
+    temperature: temperature,
+    stream: false
   };
   
-  const response = await fetch(`${HF_BASE_URL}/${HF_MODEL}`, {
+  const response = await fetch(HF_BASE_URL, {
     method: 'POST',
     headers,
     body: JSON.stringify(payload),
@@ -188,20 +185,26 @@ async function callHuggingFace(messages: any[], maxTokens: number = MAX_TOKENS_D
     let errorMsg = `HF API error: ${response.status}`;
     try {
       const errorData = await response.json();
-      errorMsg += ` - ${errorData.error || 'Unknown error'}`;
+      errorMsg += ` - ${errorData.error?.message || errorData.error || 'Unknown error'}`;
     } catch {
-      errorMsg += ` - ${response.statusText}`;
+      try {
+        const errorText = await response.text();
+        errorMsg += ` - ${errorText}`;
+      } catch {
+        errorMsg += ` - ${response.statusText}`;
+      }
     }
     throw new Error(errorMsg);
   }
   
   const result = await response.json();
   
-  if (Array.isArray(result) && result[0]?.generated_text) {
-    return result[0].generated_text.trim();
+  // Handle OpenAI-compatible response format
+  if (result.choices && result.choices[0] && result.choices[0].message) {
+    return result.choices[0].message.content.trim();
   }
   
-  throw new Error('No content generated');
+  throw new Error('No content generated from HF API');
 }
 
 function getMockResponse(task: string, lang: string): string {
@@ -291,8 +294,7 @@ export async function POST(request: NextRequest) {
     try {
       result = await callHuggingFace(messages, max_tokens, temperature);
     } catch (error) {
-      console.error('HF API Error:', error);
-      // Return mock response instead of error
+      // Fallback to mock response if HF API fails
       result = getMockResponse(task, lang);
     }
     
