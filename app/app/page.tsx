@@ -172,10 +172,24 @@ function AppContent() {
       setProgress(90);
       setCurrentTask('Sonuçlandırılıyor...');
 
-      setGeneratedContent(prev => ({
-        ...prev,
-        [task]: data.result
-      }));
+      // Handle SEO response differently
+      if (task === 'seo') {
+        setGeneratedContent(prev => ({
+          ...prev,
+          seo: {
+            full_result: data.result,
+            title_suggestions: [],
+            meta_description: '',
+            keywords: [],
+            hashtags: []
+          }
+        }));
+      } else {
+        setGeneratedContent(prev => ({
+          ...prev,
+          [task]: data.result
+        }));
+      }
 
       // Update daily limit
       if (!isProUser) {
