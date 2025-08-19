@@ -149,6 +149,41 @@ SHORTS KRİTERLERİ:
 
 Ton: ${tone}`;
     }
+    
+    if (task === "seo") {
+      return `Sen SEO uzmanısın. Verilen içerik için kapsamlı SEO paketi oluşturacaksın.
+
+SEO KRİTERLERİ:
+• İçerikle ilgili başlık önerileri (3-5 adet)
+• Meta açıklama (150-160 karakter)
+• Anahtar kelimeler (ana ve uzun kuyruk)
+• Sosyal medya hashtag'leri
+• SEO dostu yapı önerileri
+
+ÇIKTI FORMATI:
+🔍 SEO Paketi
+
+📝 BAŞLIK ÖNERİLERİ:
+• [Başlık 1 - 60 karakter altında]
+• [Başlık 2 - 60 karakter altında]
+• [Başlık 3 - 60 karakter altında]
+
+📄 META AÇIKLAMA:
+[150-160 karakter arası, çekici ve bilgilendirici]
+
+🔑 ANAHTAR KELİMELER:
+Ana: [ana anahtar kelime]
+Uzun kuyruk: [uzun kuyruk anahtar kelimeler]
+
+📱 HASHTAG'LER:
+#hashtag1 #hashtag2 #hashtag3 [konu ile ilgili]
+
+💡 SEO ÖNERİLERİ:
+• [İçerik optimizasyon önerisi 1]
+• [İçerik optimizasyon önerisi 2]
+
+Ton: ${tone}`;
+    }
   }
   
   // English defaults
@@ -212,12 +247,14 @@ function getMockResponse(task: string, lang: string): string {
     "tr": {
       "summary": "📋 Ana Noktalar:\n• İçerik çok kısa olduğu için ana fikir belirlenemedi.\n• İçerik uzunluğu sınırlı, bir cümle dahi oluşturulamadı.\n• İçerikte herhangi bir detaya rastlanmadı.\n\n📝 Özet:\nİçerik çok kısa olduğu için herhangi bir anlam ifade etmiyor. İçerik uzatılması veya daha detaylı bir içerik oluşturulması gerektiği düşünülmektedir.",
       "youtube": "🎬 YouTube Video Senaryosu\n\n🚀 GİRİŞ (0-15 saniye):\nMerhaba arkadaşlar! Bugün size [konu] hakkında önemli bilgiler vereceğim.\n\n📚 ANA İÇERİK:\nBölüm 1: [Temel bilgiler]\nBölüm 2: [Detaylar ve örnekler]\nBölüm 3: [Pratik uygulamalar]\n\n🎯 KAPANIŞ:\nUmarım faydalı olmuştur! Beğendiyseniz like atmayı unutmayın!",
-      "shorts": "⚡ Shorts/TikTok Senaryosu\n\n🔥 AÇILIŞ (0-3 saniye):\nBunu biliyordunuz mu?\n\n💥 ANA MESAJ (3-30 saniye):\n[Hızlı bilgi aktarımı]\n\n✨ KAPANIŞ:\nHangi konu hakkında video istiyorsunuz?\n\n📱 HASHTAGS: #viral #trending #keşfet"
+      "shorts": "⚡ Shorts/TikTok Senaryosu\n\n🔥 AÇILIŞ (0-3 saniye):\nBunu biliyordunuz mu?\n\n💥 ANA MESAJ (3-30 saniye):\n[Hızlı bilgi aktarımı]\n\n✨ KAPANIŞ:\nHangi konu hakkında video istiyorsunuz?\n\n📱 HASHTAGS: #viral #trending #keşfet",
+      "seo": "🔍 SEO Paketi\n\n📝 BAŞLIK ÖNERİLERİ:\n• [Konu] Hakkında Bilmeniz Gerekenler\n• [Konu] Rehberi: Adım Adım Açıklama\n• [Konu] İpuçları ve Püf Noktaları\n\n📄 META AÇIKLAMA:\n[Konu] hakkında kapsamlı bilgiler. Uzman ipuçları ve pratik önerilerle [konu] konusunda bilmeniz gereken her şey.\n\n🔑 ANAHTAR KELİMELER:\nAna: [konu]\nUzun kuyruk: [konu] nedir, [konu] nasıl yapılır, [konu] ipuçları\n\n📱 HASHTAG'LER:\n#konu #ipuçları #rehber #bilgi\n\n💡 SEO ÖNERİLERİ:\n• İçerikte anahtar kelimeleri doğal şekilde kullanın\n• Alt başlıklar ile içeriği yapılandırın"
     },
     "en": {
       "summary": "📋 Key Points:\n• Content was too short to extract main ideas.\n• Content length limited, couldn't form complete sentences.\n• No specific details found in the content.\n\n📝 Summary:\nThe content is too brief to convey meaningful information. Consider expanding or providing more detailed content.",
       "youtube": "🎬 YouTube Video Script\n\n🚀 INTRO (0-15 seconds):\nHello everyone! Today I'll share important information about [topic].\n\n📚 MAIN CONTENT:\nSection 1: [Basic information]\nSection 2: [Details and examples]\nSection 3: [Practical applications]\n\n🎯 CONCLUSION:\nI hope this was helpful! Don't forget to like if you enjoyed it!",
-      "shorts": "⚡ Shorts/TikTok Script\n\n🔥 OPENING (0-3 seconds):\nDid you know this?\n\n💥 MAIN MESSAGE (3-30 seconds):\n[Quick information delivery]\n\n✨ CLOSING:\nWhat topic do you want next?\n\n📱 HASHTAGS: #viral #trending #fyp"
+      "shorts": "⚡ Shorts/TikTok Script\n\n🔥 OPENING (0-3 seconds):\nDid you know this?\n\n💥 MAIN MESSAGE (3-30 seconds):\n[Quick information delivery]\n\n✨ CLOSING:\nWhat topic do you want next?\n\n📱 HASHTAGS: #viral #trending #fyp",
+      "seo": "🔍 SEO Package\n\n📝 TITLE SUGGESTIONS:\n• Everything You Need to Know About [Topic]\n• [Topic] Guide: Step-by-Step Explanation\n• [Topic] Tips and Best Practices\n\n📄 META DESCRIPTION:\nComprehensive information about [topic]. Expert tips and practical suggestions for everything you need to know about [topic].\n\n🔑 KEYWORDS:\nMain: [topic]\nLong-tail: what is [topic], how to [topic], [topic] tips\n\n📱 HASHTAGS:\n#topic #tips #guide #information\n\n💡 SEO RECOMMENDATIONS:\n• Use keywords naturally in content\n• Structure content with subheadings"
     }
   };
   
