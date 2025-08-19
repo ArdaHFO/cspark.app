@@ -130,14 +130,39 @@ function AppContent() {
   // Validate input
   const isInputValid = () => {
     const input = inputType === 'text' ? textInput : urlInput;
-    return input.trim().length > 10;
+    const valid = input.trim().length > 10;
+    console.log('isInputValid check:', {
+      inputType,
+      textInput,
+      urlInput,
+      input,
+      inputLength: input.trim().length,
+      valid
+    });
+    return valid;
   };
 
   // Check if user can generate
-  const canGenerate = () => {
+  const canGenerate = (task?: string) => {
+    console.log('canGenerate check:', {
+      task,
+      isProUser,
+      dailyLimit,
+      inputValid: isInputValid(),
+      hasPreviousContent: !!generatedContent.summary
+    });
+    
     if (!isProUser && dailyLimit.used >= dailyLimit.total) {
+      console.log('Daily limit exceeded');
       return false;
     }
+    
+    // For SEO task, allow if we have previous content (summary) or any other content
+    if (task === 'seo' && (generatedContent.summary || generatedContent.youtube || generatedContent.shorts)) {
+      console.log('SEO allowed due to existing content');
+      return true;
+    }
+    
     return isInputValid();
   };
 
@@ -145,8 +170,8 @@ function AppContent() {
   const generateSingleContent = async (task: 'summary' | 'youtube' | 'shorts' | 'social' | 'seo') => {
     console.log('generateSingleContent called with task:', task);
     
-    if (!canGenerate()) {
-      console.log('canGenerate() returned false');
+    if (!canGenerate(task)) {
+      console.log('canGenerate() returned false for task:', task);
       return;
     }
 
@@ -157,7 +182,16 @@ function AppContent() {
     setError('');
 
     try {
-      const input = inputType === 'text' ? textInput : urlInput;
+      // For SEO task, use summary if available, otherwise use original input
+      let input;
+      if (task === 'seo' && generatedContent.summary) {
+        input = generatedContent.summary;
+        console.log('Using summary as input for SEO');
+      } else {
+        input = inputType === 'text' ? textInput : urlInput;
+        console.log('Using original input for task:', task);
+      }
+      
       const request: GenerateRequest = {
         input,
         task,
@@ -905,7 +939,12 @@ function SEOStep({ theme, generatedContent, copyToClipboard, downloadContent, ge
             İçeriğiniz için başlık, meta açıklama ve hashtag önerileri oluşturun
           </p>
           <button
-            onClick={() => generateSingleContent('seo')}
+            onClick={() => {
+              console.log('SEO button clicked!');
+              console.log('processingState:', processingState);
+              console.log('disabled:', processingState !== 'idle');
+              generateSingleContent('seo');
+            }}
             disabled={processingState !== 'idle'}
             className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl font-semibold hover:shadow-lg transition-all disabled:opacity-50"
           >
