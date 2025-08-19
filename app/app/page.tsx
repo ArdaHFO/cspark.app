@@ -1,4 +1,10 @@
 'use client';
+// Use relative API endpoints and lib/api.ts
+import { generateContent, generateAllContent } from '../../lib/api';
+import { GenerateRequest, GenerateAllRequest } from '../../lib/api';
+
+// Define your API base URL here (adjust as needed)
+const API_BASE_URL = '/api';
 
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
@@ -24,11 +30,11 @@ interface GeneratedContent {
   };
 }
 
-const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://your-backend-url.com' 
-  : 'http://localhost:7861';
+// ...existing code...
 
 function AppContent() {
+  // ...existing code...
+  // Removed duplicate generateSingleContent function to fix redeclaration error.
   // URL params and routing
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -136,7 +142,7 @@ function AppContent() {
   };
 
   // Single content generation
-  const generateSingleContent = async (task: string) => {
+  const generateSingleContent = async (task: 'summary' | 'youtube' | 'shorts' | 'social' | 'seo') => {
     if (!canGenerate()) return;
 
     setProcessingState('preparing');
@@ -146,33 +152,21 @@ function AppContent() {
 
     try {
       const input = inputType === 'text' ? textInput : urlInput;
-      
-      const response = await fetch(`${API_BASE_URL}/generate`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          input,
-          task,
-          lang: 'tr',
-          tone,
-          length,
-          persona,
-          temperature,
-          max_tokens: 1024
-        }),
-      });
+      const request: GenerateRequest = {
+        input,
+        task,
+        lang: 'tr',
+        tone: tone as 'casual' | 'professional' | 'energetic' | 'academic',
+        length: length as 'short' | 'medium' | 'long',
+        temperature,
+        max_tokens: 1024
+      };
 
       setProcessingState('generating');
       setProgress(60);
       setCurrentTask(`${task} oluşturuluyor...`);
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
+      const data = await generateContent(request);
       
       setProcessingState('finalizing');
       setProgress(90);
@@ -214,7 +208,7 @@ function AppContent() {
   };
 
   // Generate all content (PRO feature)
-  const generateAllContent = async () => {
+  const generateAllContentFunction = async () => {
     if (!isProUser) {
       setShowUpgrade(true);
       return;
@@ -229,35 +223,39 @@ function AppContent() {
 
     try {
       const input = inputType === 'text' ? textInput : urlInput;
-      
-      const response = await fetch(`${API_BASE_URL}/generate-all`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          input,
-          lang: 'tr',
-          persona,
-          temperature
-        }),
-      });
+      const request: GenerateAllRequest = {
+        input,
+        lang: 'tr'
+      };
 
       setProcessingState('generating');
       setProgress(50);
       setCurrentTask('AI içerikleri oluşturuyor...');
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+      const data = await generateAllContent(request);
 
-      const data = await response.json();
-      
       setProcessingState('finalizing');
       setProgress(90);
-      setCurrentTask('SEO ve sosyal medya hazırlanıyor...');
+      setCurrentTask('Sonuçlandırılıyor...');
 
-      setGeneratedContent(data);
+      // Handle the response data properly
+      const processedData = {
+        ...data,
+        seo: data.seo ? { 
+          title_suggestions: [],
+          meta_description: '',
+          keywords: [],
+          hashtags: [],
+          full_result: typeof data.seo === 'string' ? data.seo : JSON.stringify(data.seo)
+        } : undefined
+      };
+      
+      setGeneratedContent(processedData);
+
+      // Update daily limit
+      if (!isProUser) {
+        setDailyLimit(prev => ({ ...prev, used: prev.used + 5 }));
+      }
 
       setProcessingState('complete');
       setProgress(100);
@@ -458,7 +456,7 @@ function AppContent() {
               temperature={temperature}
               setTemperature={setTemperature}
               generateSingleContent={generateSingleContent}
-              generateAllContent={generateAllContent}
+              generateAllContent={2}
               canGenerate={canGenerate}
               processingState={processingState}
               isProUser={isProUser}
@@ -475,6 +473,7 @@ function AppContent() {
               copyToClipboard={copyToClipboard}
               downloadContent={downloadContent}
               generateSingleContent={generateSingleContent}
+              generateAllContent={generateAllContentFunction}
               processingState={processingState}
             />
           )}

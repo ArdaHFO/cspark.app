@@ -90,6 +90,29 @@ export async function generateContent(request: GenerateRequest): Promise<Generat
     method: 'POST',
     body: JSON.stringify(request),
   });
+}
+
+/**
+ * Generate all content types at once (PRO feature)
+ */
+export interface GenerateAllRequest {
+  input: string;
+  lang?: 'tr' | 'en';
+}
+
+export interface GenerateAllResponse {
+  summary?: string;
+  youtube?: string;
+  shorts?: string;
+  social?: string;
+  seo?: string;
+}
+
+export async function generateAllContent(request: GenerateAllRequest): Promise<GenerateAllResponse> {
+  return apiFetch('/generate-all', {
+    method: 'POST',
+    body: JSON.stringify(request),
+  });
 }/**
  * Health check endpoint
  */

@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+// Direct HuggingFace API integration - no external backend needed
 const HF_API_TOKEN = process.env.HF_API_TOKEN;
 const HF_MODEL = "meta-llama/Llama-3.1-8B-Instruct";
-const HF_BASE_URL = "https://router.huggingface.co/v1";
+const HF_BASE_URL = "https://api-inference.huggingface.co/models";
 const HF_TIMEOUT = 60000;
 const MAX_TOKENS_DEFAULT = 512;
 
@@ -163,15 +164,20 @@ async function callHuggingFace(messages: any[], maxTokens: number = MAX_TOKENS_D
     'Authorization': `Bearer ${HF_API_TOKEN}`,
     'Content-Type': 'application/json'
   };
+
+  // Use HuggingFace Inference API format
+  const prompt = messages.map(m => `${m.role}: ${m.content}`).join('\n\n');
   
   const payload = {
-    model: HF_MODEL,
-    messages,
-    max_tokens: maxTokens,
-    temperature
+    inputs: prompt,
+    parameters: {
+      max_new_tokens: maxTokens,
+      temperature,
+      return_full_text: false
+    }
   };
   
-  const response = await fetch(`${HF_BASE_URL}/chat/completions`, {
+  const response = await fetch(`${HF_BASE_URL}/${HF_MODEL}`, {
     method: 'POST',
     headers,
     body: JSON.stringify(payload),
@@ -179,10 +185,10 @@ async function callHuggingFace(messages: any[], maxTokens: number = MAX_TOKENS_D
   });
   
   if (!response.ok) {
-    let errorMsg = `HF Router error: ${response.status}`;
+    let errorMsg = `HF API error: ${response.status}`;
     try {
       const errorData = await response.json();
-      errorMsg += ` - ${errorData.error?.message || 'Unknown error'}`;
+      errorMsg += ` - ${errorData.error || 'Unknown error'}`;
     } catch {
       errorMsg += ` - ${response.statusText}`;
     }
@@ -191,18 +197,11 @@ async function callHuggingFace(messages: any[], maxTokens: number = MAX_TOKENS_D
   
   const result = await response.json();
   
-  if (!result.choices || result.choices.length === 0) {
-    throw new Error('No content generated');
+  if (Array.isArray(result) && result[0]?.generated_text) {
+    return result[0].generated_text.trim();
   }
   
-  const choice = result.choices[0];
-  const generatedText = choice.message?.content || choice.text;
-  
-  if (!generatedText || !generatedText.trim()) {
-    throw new Error('Empty response');
-  }
-  
-  return generatedText.trim();
+  throw new Error('No content generated');
 }
 
 function getMockResponse(task: string, lang: string): string {
