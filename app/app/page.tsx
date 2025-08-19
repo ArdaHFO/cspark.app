@@ -60,8 +60,8 @@ function AppContent() {
   
   // UI state
   const [theme, setTheme] = useState<Theme>('dark');
-  const [isProUser, setIsProUser] = useState(false);
-  const [dailyLimit, setDailyLimit] = useState({ used: 1, total: 3 });
+  const [isProUser, setIsProUser] = useState(true); // Set as Pro for testing
+  const [dailyLimit, setDailyLimit] = useState({ used: 0, total: 100 }); // Increased for testing
   const [showUpgrade, setShowUpgrade] = useState(false);
   const [notifications, setNotifications] = useState<Array<{id: string, type: 'success' | 'error', message: string}>>([]);
 
