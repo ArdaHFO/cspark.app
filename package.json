@@ -1,7 +1,9 @@
 {
-  "name": "frontend",
-  "version": "0.1.0",
+  "name": "cspark",
+  "version": "1.0.0",
   "private": true,
+  "description": "🐙 CSpark - AI-Powered Content Creation Platform",
+  "author": "CSpark Team",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
@@ -9,8 +11,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/jsdom": "^21.1.7",
     "clsx": "^2.1.1",
     "framer-motion": "^12.23.12",
+    "jsdom": "^26.1.0",
     "lucide-react": "^0.539.0",
     "motion": "^12.23.12",
     "next": "^15.4.6",

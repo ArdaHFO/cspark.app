@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState, useEffect, useRef } from 'react'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { ArrowRight, CheckCircle, Star, Zap, Target, Users, Clock, TrendingUp, Play, ChevronDown, ChevronUp, Globe, Shield, Award } from 'lucide-react'
@@ -139,6 +138,25 @@ const InfiniteMovingCards: React.FC<InfiniteMovingCardsProps> = ({
   )
 }
 
+// Simple Login Button Component  
+const LoginButton = () => {
+  const router = useRouter()
+
+  return (
+    <div className="fixed top-12 right-6 z-50">
+      <button
+        onClick={() => router.push('/login')}
+        className="px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-medium rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-lg border border-purple-500/50 group backdrop-blur-sm"
+      >
+        <span className="flex items-center gap-2">
+          Giriş Yap
+          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+        </span>
+      </button>
+    </div>
+  )
+}
+
 // Hero Section Component
 const HeroSection = () => {
   const [isLoaded, setIsLoaded] = useState(false)
@@ -177,11 +195,11 @@ const HeroSection = () => {
     return () => observer.disconnect()
   }, [])
 
-  const handleGetStarted = () => router.push('/app')
+  const handleGetStarted = () => router.push('/login')
   const handleWatchDemo = () => {}
 
   return (
-    <section id="home" className="relative w-screen min-h-screen flex items-center justify-center pt-16 scroll-mt-16 bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900 overflow-hidden">
+    <section id="home" className="relative w-screen min-h-screen flex items-center justify-center scroll-mt-16 bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900 overflow-hidden">
       {/* Kayan yıldızlar efekti */}
       <div className="absolute inset-0 opacity-30">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-400/20 via-transparent to-transparent animate-pulse"></div>
@@ -190,8 +208,8 @@ const HeroSection = () => {
       {/* Main content container */}
       <div className={`relative z-10 w-full max-w-6xl px-6 sm:px-8 lg:px-10 text-center transition-all duration-700 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
         <div className="mx-auto max-w-4xl">
-          {/* Brand header */}
-          <div className="flex items-center justify-center gap-3 mb-8">
+          {/* Brand header - main logo */}
+          <div className="flex items-center justify-center gap-3 mb-16 mt-12">
             <div className="relative w-12 h-12 flex items-center justify-center rounded-full bg-gradient-to-br from-purple-500/20 to-pink-500/20 shadow-lg backdrop-blur-sm border border-purple-500/30 group cursor-pointer overflow-hidden">
               <Image
                 src="/octopus-logo.png"
@@ -203,14 +221,24 @@ const HeroSection = () => {
               <div className="absolute inset-0 bg-purple-500/10 group-hover:bg-purple-500/20 transition-colors duration-300 rounded-full"></div>
             </div>
             <div className="text-center group cursor-pointer">
-              <div className="text-3xl font-extrabold bg-gradient-to-r from-purple-300 via-white to-pink-300 bg-clip-text text-transparent hover:from-purple-200 hover:via-purple-100 hover:to-pink-200 transition-all duration-500 transform group-hover:scale-110 group-hover:tracking-wider animate-pulse">
+              <div className="text-2xl font-bold bg-gradient-to-r from-purple-300 via-pink-300 to-purple-300 bg-clip-text text-transparent hover:from-purple-200 hover:via-purple-100 hover:to-pink-200 transition-all duration-500 transform group-hover:scale-110 group-hover:tracking-wider animate-pulse">
                 CSpark
               </div>
-              <div className="text-xs text-purple-300 font-medium tracking-wide group-hover:text-purple-200 transition-colors duration-300">
+              <div className="text-sm text-purple-300 font-medium tracking-wide group-hover:text-purple-200 transition-colors duration-300">
                 AI Content Studio
               </div>
             </div>
           </div>
+
+          {/* Main headline - moved below brand */}
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight max-w-4xl mx-auto mb-12">
+            <span className="bg-gradient-to-r from-purple-300 via-pink-300 to-purple-300 bg-clip-text text-transparent font-extrabold">
+              CSpark
+            </span>
+            <span className="bg-gradient-to-r from-white via-purple-100 to-white bg-clip-text text-transparent">
+              {" "}ile akıllıca büyüyün
+            </span>
+          </h1>
 
           {/* Lead badge with hover animation */}
           <div className="group relative inline-flex items-center gap-3 px-5 py-3 bg-white/5 backdrop-blur-md rounded-full border border-white/10 mb-12 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer hover:scale-105">
@@ -233,16 +261,6 @@ const HeroSection = () => {
               </div>
             </div>
           </div>
-
-          {/* Main headline */}
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight max-w-4xl mx-auto mb-6">
-            <span className="bg-gradient-to-r from-purple-300 via-pink-300 to-purple-300 bg-clip-text text-transparent animate-pulse font-extrabold"> 
-              CSpark
-            </span>
-            <span className="bg-gradient-to-r from-white via-purple-100 to-white bg-clip-text text-transparent">
-              {" "}ile akıllıca büyüyün
-            </span>
-          </h1>
 
           {/* Subtitle with Custom Text Animation */}
           <div 
@@ -656,9 +674,9 @@ const PricingSection = () => {
 
   const handlePlanSelect = (plan: string) => {
     if (plan === 'Free') {
-      router.push('/app')
+      router.push('/login')
     } else if (plan === 'Pro') {
-      router.push('/app?upgrade=pro')
+      router.push('/login?upgrade=pro')
     } else if (plan === 'Agency') {
       window.location.href = 'mailto:info@cspark.com?subject=Agency Plan İnterest'
     }
@@ -1178,6 +1196,7 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-black">
+      <LoginButton />
       <HeroSection />
       <FeaturesSection />
       <HowItWorksSection />

@@ -79,6 +79,7 @@ export interface GenerateRequest {
   lang?: 'tr' | 'en';
   max_tokens?: number;
   temperature?: number;
+  duration?: number; // Dakika (YouTube) veya saniye (Shorts) cinsinden süre
 }
 
 export interface GenerateResponse {

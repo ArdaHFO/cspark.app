@@ -1,6 +1,6 @@
-# CSpark.app - Creator Transformer
+# 🐙 CSpark - AI-Powered Content Creation Platform
 
-Modern AI destekli içerik dönüştürme platformu. Web sitesi, metin ve URL'lerden YouTube videoları, özet, sosyal medya içerikleri ve daha fazlasını oluşturun.
+Modern AI destekli içerik yaratım platformu. Yapay zeka ile YouTube videoları, özetler, sosyal medya içerikleri ve daha fazlasını oluşturun.
 
 ## 🚀 Canlı Demo
 
@@ -8,37 +8,40 @@ Modern AI destekli içerik dönüştürme platformu. Web sitesi, metin ve URL'le
 
 ## ✨ Özellikler
 
-- 🤖 **AI Destekli İçerik Üretimi** - Llama-3.1-8B-Instruct modeli
-- 📱 **Modern UI/UX** - Next.js 15 + Tailwind CSS  
+- 🐙 **CSpark AI Engine** - Llama-3.1-8B-Instruct modeli ile güçlendirilmiş
+- 🎨 **Modern Arayüz** - Dark/Light theme desteği ile responsive tasarım  
 - 🌐 **URL İçerik Çıkarma** - Web sitelerinden otomatik metin çıkarma
-- 📝 **Çoklu Format Desteği** - YouTube, Shorts, Özet, Sosyal Medya
-- ☁️ **Serverless API** - Vercel API Routes ile ücretsiz hosting
-- 🔒 **Güvenli** - Environment variable'lar ile API güvenliği
+- � **YouTube İçerik Üretimi** - Script, thumbnail, SEO optimizasyonu
+- 📱 **Çoklu Format Desteği** - Shorts, özet, sosyal medya içerikleri
+- ☁️ **Serverless Mimari** - Ölçeklenebilir ve güvenilir altyapı
+- 🎯 **SEO Optimizasyonu** - 25-30 hashtag ile kapsamlı SEO paketi
 
 ## 🏗️ Teknoloji Stack
 
 ### Frontend
-- **Next.js 15.4.6** - React framework with App Router
-- **React 19.1.0** - UI library
-- **TypeScript 5.9.2** - Type safety
-- **Tailwind CSS 3.4.17** - Styling framework
-- **Lucide React** - Modern icons
+- **Next.js 15.4.6** - React framework with Turbopack
+- **React 19.1.0** - Modern UI library
+- **TypeScript** - Type-safe development
+- **Tailwind CSS** - Utility-first CSS framework
+- **Framer Motion** - Smooth animations
+- **Lucide React** - Beautiful icons
 
 ### Backend
 - **Vercel API Routes** - Serverless functions
 - **Hugging Face API** - AI model integration  
-- **Node.js 18+** - Runtime environment
+- **Python Flask** - Backend API server
 
-### AI Model
+### AI & Content
 - **meta-llama/Llama-3.1-8B-Instruct** - Content generation
-- **Hugging Face Router** - Model serving
+- **Anti-repetition algorithms** - Unique content guarantee
+- **Advanced prompt engineering** - Quality content output
 
 ## 🚀 Kurulum ve Çalıştırma
 
 ### 1. Proje Klonlama
 ```bash
-git clone https://github.com/ArdaHFO/cspark.app.git
-cd cspark.app
+git clone https://github.com/your-username/cspark.git
+cd cspark
 ```
 
 ### 2. Dependencies Kurulumu

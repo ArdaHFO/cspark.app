@@ -17,15 +17,16 @@ export const metadata: Metadata = {
   description: "Saniyeler içinde profesyonel blog yazıları, video scriptleri ve sosyal medya içerikleri üretin. AI destekli içerik üretim platformu.",
   icons: {
     icon: [
-      { url: "/octopus-logo.png", sizes: "32x32", type: "image/png" },
-      { url: "/octopus-logo.png", sizes: "16x16", type: "image/png" }
+      { url: "/favicon.png", sizes: "64x64", type: "image/png" },
+      { url: "/favicon.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon.png", sizes: "16x16", type: "image/png" }
     ],
-    shortcut: "/octopus-logo.png",
-    apple: "/octopus-logo.png",
-    other: {
-      rel: "icon",
-      url: "/octopus-logo.png",
-    },
+    shortcut: "/favicon.png",
+    apple: "/favicon.png",
+    other: [
+      { rel: "icon", url: "/favicon.png", sizes: "64x64" },
+      { rel: "apple-touch-icon", url: "/favicon.png" }
+    ],
   },
 };
 
