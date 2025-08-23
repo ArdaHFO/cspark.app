@@ -331,6 +331,16 @@ export default function CreatorTransformerPage() {
       
       const scriptPrompt = `İçerik Konusu: ${contentToUse}
 
+🔥 YARATICI İÇERİK GENİŞLETME TALİMATLARI:
+- Verilen konuyu DETAYLANDIR ve GENİŞLET
+- Yetersiz bilgi varsa: kendi uzmanlığınla EKLEMELER yap
+- Konuyla ilgili: tarihçe, örnekler, anekdotlar, ipuçları ekle
+- TEKRAR ETMe - her cümle farklı bir açıdan yaklaş
+- Farklı perspektifler sun (uzman görüşü, kişisel deneyim, karşılaştırma)
+- İstatistikler, rakamlar, gerçek örnekler kullan
+- "Biliyorum ki...", "Unutmayalım ki..." gibi bağlayıcılar kullanma
+- Her paragrafta YENİ BİLGİ ver
+
 SCRIPT TALIMATLARI:
 - Script Türü: ${scriptType === 'youtube' ? 'YouTube Video' : 'YouTube Shorts/TikTok'}
 - Hedef Süre: ${durationText}
@@ -343,6 +353,14 @@ KRİTİK KELIME SAYISI HEDEFİ:
   ? `${scriptDuration * 160} kelime` 
   : `${Math.round(scriptDuration * 60 * 2.8)} kelime`}
 - Bu sayı MUTLAKA tutturulmalıdır!
+
+İÇERİK ÇEŞİTLİLİĞİ KURALLARI:
+- Aynı bilgiyi 2 kez söyleme
+- Her bölümde farklı açılardan yaklaş
+- Örnekler, hikayeler, karşılaştırmalar kullan
+- Konu hakkında ek bilgiler ve detaylar ekle
+- Konuyla ilgili pratik ipuçları ver
+- İzleyiciyle interaktif bağlantılar kur
 
 ZORUNLU FORMAT:
 ${scriptType === 'youtube' ? `
@@ -398,8 +416,27 @@ KRİTİK KURAL - KELİME SAYISI KONTROLÜ:
 - Eğer hedef kelime sayısına ulaşmadıysan, DAHA FAZLA METIN YAZ!
 - Eğer hedef kelime sayısını aştıysan, METNİ KISALT!
 
+🚫 YASAKLI TEKRARLAR:
+- Aynı cümle yapısını kullanma
+- Aynı örnekleri tekrarlama  
+- "Ayrıca", "Bunun yanında" gibi dolgu kelimeler kullanma
+- Önceki bölümde söylediğin bilgiyi tekrarlama
+- Genel laflar etme, spesifik ol!
+
+💡 İÇERİK GENİŞLETME STRATEJİLERİ:
+- Konuyla ilgili tarihsel bilgiler ekle
+- Pratik uygulamalar ve örnekler ver
+- Karşılaştırmalar yap (önce/sonra, doğru/yanlış)
+- İstatistikler ve rakamlar kullan
+- Uzman görüşleri ve alıntılar ekle
+- Kişisel deneyim hikayeleri anlat
+- Step-by-step rehberler ver
+- Hata yapma ve doğru yollar göster
+
 ZORUNLU KONTROL LİSTESİ:
 ✅ Her bölümde tam hedef kelime sayısına ulaştım mı?
+✅ Aynı bilgiyi tekrar etmedim mi?
+✅ Her bölümde yeni ve farklı bilgiler verdim mi?
 ✅ Toplam kelime sayısı ${scriptType === 'youtube' ? `${scriptDuration * 160}` : `${Math.round(scriptDuration * 60 * 2.8)}`} kelime mi?
 ✅ Her bölümün sonunda gerçek kelime sayısını yazdım mı?
 ✅ Konuşma metni akıcı ve doğal mı?
