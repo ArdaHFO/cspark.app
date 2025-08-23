@@ -156,7 +156,7 @@ export default function AppPage() {
       </div>
 
       {/* Header */}
-      <div className="relative z-10 bg-black/20 backdrop-blur-md border-b border-white/10">
+      <div className="relative z-50 bg-black/20 backdrop-blur-md border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo & Brand */}
@@ -201,7 +201,7 @@ export default function AppPage() {
             </nav>
 
             {/* User Menu */}
-            <div className="relative">
+            <div className="relative z-[100000]">
               <button
                 onClick={() => setShowUserMenu(!showUserMenu)}
                 className="flex items-center gap-3 p-2 hover:bg-white/10 rounded-lg transition-colors duration-200 group"
@@ -217,7 +217,7 @@ export default function AppPage() {
 
               {/* Dropdown Menu */}
               {showUserMenu && (
-                <div className="absolute right-0 top-full mt-2 w-48 bg-black/80 backdrop-blur-md border border-white/20 rounded-xl shadow-xl z-50">
+                <div className="absolute right-0 top-full mt-2 w-48 bg-black/80 backdrop-blur-md border border-white/20 rounded-xl shadow-xl z-[99999]">
                   <div className="p-2">
                     <button
                       onClick={() => {

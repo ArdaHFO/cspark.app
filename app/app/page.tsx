@@ -164,7 +164,7 @@ export default function AppPage() {
       </div>
 
       {/* Header */}
-      <div className={`relative z-10 backdrop-blur-md border-b transition-all duration-500 ${
+      <div className={`relative z-50 backdrop-blur-md border-b transition-all duration-500 ${
         isDarkMode 
           ? 'bg-black/20 border-white/10' 
           : 'bg-white/20 border-gray-200/30'
@@ -242,7 +242,7 @@ export default function AppPage() {
               </button>
 
               {/* User Menu */}
-              <div className="relative">
+              <div className="relative z-[100000]">
                 <button
                   onClick={() => setShowUserMenu(!showUserMenu)}
                   className={`flex items-center gap-3 p-2 rounded-lg transition-colors duration-200 group ${
@@ -268,7 +268,7 @@ export default function AppPage() {
 
                 {/* Dropdown Menu */}
                 {showUserMenu && (
-                  <div className={`absolute right-0 top-full mt-2 w-48 backdrop-blur-md border rounded-xl shadow-xl z-[9999] transition-all duration-500 ${
+                  <div className={`absolute right-0 top-full mt-2 w-48 backdrop-blur-md border rounded-xl shadow-xl z-[99999] transition-all duration-500 ${
                     isDarkMode 
                       ? 'bg-black/80 border-white/20' 
                       : 'bg-white/90 border-gray-200/50'
