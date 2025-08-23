@@ -250,12 +250,12 @@ const HeroSection = () => {
                 className="object-contain group-hover:scale-110 transition-transform duration-300"
               />
             </div>
-            <span className="text-sm text-gray-200 font-medium">Meta LLAMA 3.1 Destekli İçerik</span>
+            <span className="text-sm text-gray-200 font-medium">DeepSeek-V3.1 Destekli İçerik</span>
             
             {/* Surprise tooltip - positioned at card level */}
             <div className="absolute top-1/2 -translate-y-1/2 -right-4 translate-x-full opacity-0 group-hover:opacity-100 transition-all duration-500 scale-95 group-hover:scale-100 pointer-events-none z-50">
               <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-2 rounded-xl text-xs font-semibold shadow-xl relative whitespace-nowrap">
-                🚀 Meta'nın en gelişmiş AI modeli!
+                🚀 DeepSeek'in gelişmiş AI modeli!
                 <div className="absolute top-1/2 right-full transform -translate-y-1/2 w-0 h-0 border-t-4 border-b-4 border-r-4 border-transparent border-r-purple-600"></div>
               </div>
             </div>

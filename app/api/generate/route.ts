@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 // Direct HuggingFace API integration - no external backend needed
 const HF_API_TOKEN = process.env.HF_API_TOKEN;
-const HF_MODEL = "meta-llama/Llama-3.1-8B-Instruct:novita";
+const HF_MODEL = "deepseek-ai/DeepSeek-R1-Distill-Qwen-14B:novita";
 const HF_BASE_URL = "https://router.huggingface.co/v1/chat/completions";
 const HF_TIMEOUT = 60000;
 const MAX_TOKENS_DEFAULT = 512;

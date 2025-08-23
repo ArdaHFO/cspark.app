@@ -325,11 +325,14 @@ export default function CreatorTransformerPage() {
     setError(null)
 
     try {
+      // 10 dakika seçildiğinde 9 dakika ile birebir aynı hesaplamaları yap
+      const adjustedDuration = scriptDuration === 10 ? 9 : scriptDuration;
+      
       const durationText = scriptType === 'shorts' 
         ? `${scriptDuration * 60} saniye` 
         : `${scriptDuration} dakika`;
       
-      const scriptPrompt = `İçerik Konusu: ${contentToUse}
+  const scriptPrompt = `İçerik Konusu: ${contentToUse}
 
 SCRIPT TALIMATLARI:
 - Script Türü: ${scriptType === 'youtube' ? 'YouTube Video' : 'YouTube Shorts/TikTok'}
@@ -340,75 +343,89 @@ SCRIPT TALIMATLARI:
 
 KRİTİK KELIME SAYISI HEDEFİ:
 - TOPLAM HEDEF: ${scriptType === 'youtube' 
-  ? `${scriptDuration * 160} kelime` 
-  : `${Math.round(scriptDuration * 60 * 2.8)} kelime`}
-- Bu sayı MUTLAKA tutturulmalıdır!
+  ? `${adjustedDuration * 150} kelime` 
+  : `${Math.round(adjustedDuration * 60 * 2.5)} kelime`}
+- En az bu sayıya ulaşılmalıdır; +%5'e kadar aşılabilir.
 
 ZORUNLU FORMAT:
 ${scriptType === 'youtube' ? `
-### 📺 VIDEO SENARYOSU (${scriptDuration} dakika)
+### 📺 VIDEO SENARYOSU (${adjustedDuration} dakika)
 
 ### 🎯 HOOK BÖLÜMÜ (0-30 saniye):
-**Kelime Sayısı: [80 kelime]**
+**Kelime Sayısı: [75 kelime]**
 [Tam konuşma metni buraya...]
 
 ### 📖 GİRİŞ VE PROBLEM TANIMI (30 saniye - 2 dakika):
-**Kelime Sayısı: [${Math.round(scriptDuration * 160 * 0.15)} kelime]**
+**Kelime Sayısı: [${Math.round(adjustedDuration * 150 * 0.15)} kelime]**
 [Tam konuşma metni buraya...]
 
-### 🎮 ANA İÇERİK BÖLÜMÜ (2 dakika - ${scriptDuration - 2} dakika):
-**Kelime Sayısı: [${Math.round(scriptDuration * 160 * 0.7)} kelime]**
+### 🎮 ANA İÇERİK BÖLÜMÜ (2 dakika - ${adjustedDuration - 2} dakika):
+**Kelime Sayısı: [${Math.round(adjustedDuration * 150 * 0.7)} kelime]**
 [Tam konuşma metni buraya...]
 
 ### 🎯 SONUÇ VE CALL-TO-ACTION (Son 1 dakika):
-**Kelime Sayısı: [${Math.round(scriptDuration * 160 * 0.15)} kelime]**
+**Kelime Sayısı: [${Math.round(adjustedDuration * 150 * 0.15)} kelime]**
 [Tam konuşma metni buraya...]
 
 ### 📊 TOPLAM KELİME SAYISI:
-**Kontrol: [TOPLAM MUTLAKA ${scriptDuration * 160} KELİME OLMALI]**` 
+**Kontrol: [TOPLAM EN AZ ${adjustedDuration * 150} KELİME OLMALI; +%5'e kadar aşılabilir]**` 
 : `
-### 📱 SHORTS SENARYOSU (${scriptDuration * 60} saniye)
+### 📱 SHORTS SENARYOSU (${adjustedDuration * 60} saniye)
 
 ### 🎯 HOOK (0-3 saniye):
-**Kelime Sayısı: [${Math.round(scriptDuration * 60 * 2.8 * 0.1)} kelime]**
+**Kelime Sayısı: [${Math.round(adjustedDuration * 60 * 2.5 * 0.1)} kelime]**
 [Tam konuşma metni...]
 
-### 📖 ANA İÇERİK (3-${scriptDuration * 60 - 5} saniye):
-**Kelime Sayısı: [${Math.round(scriptDuration * 60 * 2.8 * 0.8)} kelime]**
+### 📖 ANA İÇERİK (3-${adjustedDuration * 60 - 5} saniye):
+**Kelime Sayısı: [${Math.round(adjustedDuration * 60 * 2.5 * 0.8)} kelime]**
 [Tam konuşma metni...]
 
 ### 🎯 KAPANIŞ (Son 5 saniye):
-**Kelime Sayısı: [${Math.round(scriptDuration * 60 * 2.8 * 0.1)} kelime]**
+**Kelime Sayısı: [${Math.round(adjustedDuration * 60 * 2.5 * 0.1)} kelime]**
 [Tam konuşma metni...]
 
 ### 📊 TOPLAM KELİME SAYISI:
-**Kontrol: [TOPLAM MUTLAKA ${Math.round(scriptDuration * 60 * 2.8)} KELİME OLMALI]**`}
+**Kontrol: [TOPLAM EN AZ ${Math.round(adjustedDuration * 60 * 2.5)} KELİME OLMALI; +%5'e kadar aşılabilir]**`}
 
 ÖNEMLİ UYARILAR:
-- Her bölümde belirtilen kelime sayılarını TAM OLARAK tuttur
-- Konuşma metni akıcı ve doğal olmalı
-- Toplam kelime sayısı MUTLAKA hedefi bulmalı
-- Her bölümün kelime sayısını ayrı ayrı kontrol et
-- Bölüm sonlarında kelime sayısını parantez içinde belirt
+- Her bölümde belirtilen kelime hedefini EN AZ yakala; +%5'e kadar aşabilirsin
+- Konuşma metni akıcı, doğal ve sahne yönlendirmeleriyle zengin olmalı
+- Toplam kelime sayısı MUTLAKA hedefi bulmalı; eksikse metni genişlet, fazlaysa kısalt
+- Her bölümün sonunda gerçek kelime sayısını mutlaka belirt
 
-KRİTİK KURAL - KELİME SAYISI KONTROLÜ:
-- Yazdığın her bölümde KELİMELERİ SAY!
-- Örnek: "Bu harika bir video olacak bugün" = 6 kelime
-- Her bölümün sonunda şunu yaz: (Gerçek kelime sayısı: X kelime)
-- Eğer hedef kelime sayısına ulaşmadıysan, DAHA FAZLA METIN YAZ!
-- Eğer hedef kelime sayısını aştıysan, METNİ KISALT!
+TEKRAR YASAĞI (ÇOK ÖNEMLİ):
+- Aynı cümleyi veya bilgiyi tekrar etme; önceki 5-10 cümleyle benzerse yeniden yaz (paraphrase)
+- Liste veya tabloyu ikinci kez aynen yazma; ikinci geçişte özetle ve içgörü üret
+- Kopyala-yapıştır yapma; her bölümde yeni bir bakış açısı sun
+
+YETERSİZ VERİ STRATEJİSİ:
+- Girdi kısa/yetersizse şu zenginleştirmeleri uygula: bağlam oluştur, neden-sonuç analizi, örnek senaryolar, benzetmeler, SSS, öneriler, riskler, yapılacaklar listesi, mini-vaka çalışmaları
+- Gerektiğinde cümleleri anlamı koruyarak yeniden ifade et (paraphrase) ve yeni örneklerle destekle
+
+LİSTE KULLANIM KURALI:
+- Uzun veri listelerini (ör. tarihler/koordinatlar) aynen tekrarlama; 1-2 temsilî örnek ver, ardından örüntü/çıkarım/öneri üret
+
+FORMAT KISITLAMASI:
+- Başlıklarda veya gövdede "[1740 kelimelik]" gibi şablon metinler yazma; sadece gerçek konuşma metnini yaz
+- Bölüm sonunda yalnızca şu satırı ekle: (Gerçek kelime sayısı: X kelime)
+
+KELİME SAYISI DOĞRULAMASI:
+- Her bölümde kelimeleri say ve hedefe uyumlu hale getir
+- Örnek sayım: "Bugün çok önemli bir konuya başlıyoruz" = 6 kelime
+- Hedefe ulaşmadıysan aynı bilgiyi tekrar etmeden yeni içerik ekleyerek tamamla
 
 ZORUNLU KONTROL LİSTESİ:
-✅ Her bölümde tam hedef kelime sayısına ulaştım mı?
-✅ Toplam kelime sayısı ${scriptType === 'youtube' ? `${scriptDuration * 160}` : `${Math.round(scriptDuration * 60 * 2.8)}`} kelime mi?
+✅ Her bölümde hedefi en az yakaladım mı (aşım +%5'i geçmiyor)?
+ ✅ Toplam kelime sayısı ${scriptType === 'youtube' ? `${adjustedDuration * 150}` : `${Math.round(adjustedDuration * 60 * 2.5)}`} kelime mi?
 ✅ Her bölümün sonunda gerçek kelime sayısını yazdım mı?
+✅ Tekrar var mı? Varsa yeniden yazıp temizledim mi?
 ✅ Konuşma metni akıcı ve doğal mı?
 
-ÖRNEK KELIME SAYMA: "Bu harika bir video olacak bugün sizlerle" = 8 kelime
+ÖRNEK KELIME SAYMA: "Bu harika bir video olacak bugün sizlerle" = 7 kelime
 
 Lütfen yukarıdaki formatı KESINLIKLE takip ederek, toplam ${scriptType === 'youtube' 
-  ? `${scriptDuration * 160} kelime` 
-  : `${Math.round(scriptDuration * 60 * 2.8)} kelime`} içeren profesyonel script oluştur. HER BÖLÜMDE KELİME SAYISINI GERÇEKTEN SAY VE DOĞRULA!`
+  ? `${adjustedDuration * 150} kelime` 
+  : `${Math.round(adjustedDuration * 60 * 2.5)} kelime`} içeren profesyonel script oluştur. HER BÖLÜMDE KELİME SAYISINI GERÇEKTEN SAY VE DOĞRULA; TEKRARI ÖNLE, VERİ YETERSİZSE ANALİZ VE PARAPHRASE İLE ZENGİNLEŞTİR!`
       
       // Use correct task based on script type
       const taskType = (scriptType === 'shorts' ? 'shorts' : 'youtube') as 'shorts' | 'youtube'
@@ -420,19 +437,21 @@ Lütfen yukarıdaki formatı KESINLIKLE takip ederek, toplam ${scriptType === 'y
         maxTokens = Math.max(1600, Math.min(scriptDuration * 60 * 16, 6000));
       } else {
         // YouTube için token hesaplaması (dakika başına 800 token - 2x artırıldı)
-        maxTokens = Math.max(2400, Math.min(scriptDuration * 800, 16000));
+        // 10 dakika için 9 dakika ile aynı şekilde hesapla
+        const adjustedDuration = scriptDuration === 10 ? 9 : scriptDuration;
+        maxTokens = Math.max(2400, Math.min(adjustedDuration * 800, 16000));
       }
       
-      // Calculate duration for API call
+      // Calculate duration for API call - use adjusted duration for 10=9
       const apiDuration = scriptType === 'shorts' 
-        ? scriptDuration * 60 // Shorts için saniye cinsinden
-        : scriptDuration // YouTube için dakika cinsinden
+        ? adjustedDuration * 60 // Shorts için saniye cinsinden
+        : adjustedDuration // YouTube için dakika cinsinden
       
       const requestPayload = {
         input: scriptPrompt,
         task: taskType,
         tone: selectedPersona ? getPersonaTone(selectedPersona) as any : 'casual' as any,
-        length: (scriptDuration <= 5 ? 'short' : scriptDuration <= 10 ? 'medium' : 'long') as 'short' | 'medium' | 'long',
+        length: (adjustedDuration <= 5 ? 'short' : adjustedDuration <= 10 ? 'medium' : 'long') as 'short' | 'medium' | 'long',
         lang: 'tr' as 'tr',
         max_tokens: maxTokens,
         temperature: 0.7,
@@ -1163,7 +1182,7 @@ Lütfen bu video içeriği için kapsamlı SEO paketi ve görsel öneriler oluş
                   <input
                     type="range"
                     min={scriptType === 'shorts' ? "0.5" : "1"}
-                    max={scriptType === 'shorts' ? "3" : "20"}
+                    max={scriptType === 'shorts' ? "3" : "10"}
                     step={scriptType === 'shorts' ? "0.5" : "1"}
                     value={scriptDuration}
                     onChange={(e) => setScriptDuration(Number(e.target.value))}
@@ -1184,7 +1203,7 @@ Lütfen bu video içeriği için kapsamlı SEO paketi ve görsel öneriler oluş
                 }`}>
                   {scriptType === 'shorts' && scriptDuration > 1.5 && "⚠️ Shorts için 90 saniye altı önerilir"}
                   {scriptType === 'youtube' && scriptDuration < 3 && "💡 YouTube için minimum 3 dakika önerilir"}
-                  {scriptType === 'youtube' && scriptDuration > 15 && "⚠️ Uzun videolar için daha fazla içerik gerekir"}
+                  {scriptType === 'youtube' && scriptDuration > 10 && "⚠️ Uzun videolar için daha fazla içerik gerekir"}
                 </div>
               </div>
 

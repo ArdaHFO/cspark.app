@@ -29,7 +29,8 @@ import {
   Copy,
   Trash2,
   Sun,
-  Moon
+  Moon,
+  X
 } from 'lucide-react'
 
 interface ContentItem {
@@ -49,6 +50,9 @@ export default function AppPage() {
   const [showUserMenu, setShowUserMenu] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedFilter, setSelectedFilter] = useState<'all' | 'blog' | 'social' | 'email' | 'ad'>('all')
+  const [showContentModal, setShowContentModal] = useState(false)
+  const [selectedContent, setSelectedContent] = useState<ContentItem | null>(null)
+  const [showDropdownId, setShowDropdownId] = useState<string | null>(null)
 
   // Animated background octopi
   const backgroundOctopi = Array.from({ length: 12 }, (_, i) => ({
@@ -67,27 +71,72 @@ export default function AppPage() {
       id: '1',
       title: 'E-ticaret Mağazanız İçin SEO Rehberi',
       type: 'blog',
-      content: 'E-ticaret SEO stratejileri ile online mağazanızın görünürlüğünü artırın...',
+      content: 'E-ticaret SEO stratejileri ile online mağazanızın görünürlüğünü artırın. Ürün sayfalarınızı optimize edin, kategori sayfalarında anahtar kelimeleri doğru kullanın ve teknik SEO gereksinimlerini yerine getirin. Google Shopping entegrasyonu, site hızı optimizasyonu ve kullanıcı deneyimi iyileştirmeleri ile organik trafiğinizi %300\'e kadar artırabilirsiniz.',
       createdAt: '2024-01-20',
       wordCount: 1250,
       status: 'completed'
     },
     {
       id: '2',
-      title: 'Instagram Hikaye Serisi',
+      title: 'Instagram Hikaye Serisi: Marka Hikayeniz',
       type: 'social',
-      content: 'Markanızı öne çıkaracak yaratıcı Instagram hikayeleri...',
+      content: 'Markanızı öne çıkaracak yaratıcı Instagram hikayeleri ile takipçilerinizle duygusal bağ kurun. Arkasında kalan, kullanıcı yorumları ve interaktif anketler ile engagement oranınızı artırın. Her hikayede call-to-action kullanarak direkt satışa dönüştürün.',
       createdAt: '2024-01-19',
       wordCount: 320,
       status: 'draft'
     },
     {
       id: '3',
-      title: 'Haftalık Newsletter',
+      title: 'Haftalık Newsletter: Teknoloji Trendleri',
       type: 'email',
-      content: 'Müşterilerinizle etkili iletişim kuracak e-posta içeriği...',
+      content: 'Müşterilerinizle etkili iletişim kuracak e-posta içeriği. Bu haftanın öne çıkan teknoloji haberlerini, yapay zeka gelişmelerini ve dijital pazarlama stratejilerini özetleyen profesyonel newsletter formatı. Açılma oranını artıracak konu başlıkları ve CTA önerileri dahil.',
       createdAt: '2024-01-18',
       wordCount: 680,
+      status: 'completed'
+    },
+    {
+      id: '4',
+      title: 'Black Friday Kampanya Metinleri',
+      type: 'ad',
+      content: 'Yılın en büyük indirim kampanyası için hazırlanmış Facebook ve Google Ads metinleri. FOMO etkisi yaratan başlıklar, aciliyet hissi uyandıran call-to-action\'lar ve dönüşüm odaklı reklam kopyaları. A/B test önerileri ve hedef kitle segmentasyonu dahil.',
+      createdAt: '2024-01-17',
+      wordCount: 450,
+      status: 'completed'
+    },
+    {
+      id: '5',
+      title: 'LinkedIn Thought Leadership Yazıları',
+      type: 'social',
+      content: 'B2B pazarında otorite konumunuzu güçlendirecek LinkedIn post serileri. Sektör analizleri, liderlik deneyimleri ve profesyonel görüşlerle ağınızı genişletin. Engagement artırıcı sorular ve networking fırsatları yaratacak içerik önerileri.',
+      createdAt: '2024-01-16',
+      wordCount: 890,
+      status: 'draft'
+    },
+    {
+      id: '6',
+      title: 'Müşteri Onboarding E-posta Serisi',
+      type: 'email',
+      content: 'Yeni müşterilerinizi memnun edecek 7 günlük otomatik e-posta serisi. Hoş geldin mesajından başlayarak ürün eğitimleri, destek kaynaklarına yönlendirme ve ilk satın alma sonrası takip e-postaları. Churn oranını %40 azaltacak stratejik yaklaşım.',
+      createdAt: '2024-01-15',
+      wordCount: 1120,
+      status: 'completed'
+    },
+    {
+      id: '7',
+      title: 'YouTube Video Script: AI Araçları',
+      type: 'blog',
+      content: '2024\'ün en popüler yapay zeka araçlarını tanıtan 10 dakikalık YouTube video scripti. ChatGPT\'den Midjourney\'e, DALL-E\'den Claude\'a kadar en güncel AI platformlarının detaylı analizi. Pratik kullanım örnekleri ve işletmelere sağladığı avantajlar.',
+      createdAt: '2024-01-14',
+      wordCount: 1580,
+      status: 'draft'
+    },
+    {
+      id: '8',
+      title: 'TikTok Trend Analizi ve İçerik Önerileri',
+      type: 'social',
+      content: 'Bu ayın viral TikTok trendlerini markanıza uyarlayacak yaratıcı içerik fikirleri. Hashtag stratejileri, müzik seçimleri ve viral olma potansiyeli yüksek video formatları. Gen Z hedef kitlesine ulaşmanın en etkili yolları.',
+      createdAt: '2024-01-13',
+      wordCount: 640,
       status: 'completed'
     }
   ])
@@ -96,6 +145,42 @@ export default function AppPage() {
     localStorage.removeItem('rememberedEmail')
     localStorage.removeItem('rememberMe')
     router.push('/login')
+  }
+
+  const handleViewContent = (item: ContentItem) => {
+    setSelectedContent(item)
+    setShowContentModal(true)
+  }
+
+  const handleCopyContent = async (content: string) => {
+    try {
+      await navigator.clipboard.writeText(content)
+      // Show success toast or notification here
+      alert('İçerik panoya kopyalandı!')
+    } catch (err) {
+      console.error('Kopyalama başarısız:', err)
+      alert('Kopyalama işlemi başarısız oldu')
+    }
+  }
+
+  const handleShareContent = (item: ContentItem) => {
+    if (navigator.share) {
+      navigator.share({
+        title: item.title,
+        text: item.content,
+        url: window.location.href
+      }).catch(console.error)
+    } else {
+      // Fallback for browsers that don't support Web Share API
+      handleCopyContent(`${item.title}\n\n${item.content}`)
+    }
+  }
+
+  const handleDeleteContent = (id: string) => {
+    if (confirm('Bu içeriği silmek istediğinizden emin misiniz?')) {
+      // Here you would typically make an API call to delete the content
+      alert('İçerik silindi!')
+    }
   }
 
   const filteredContent = contentItems.filter(item => {
@@ -172,7 +257,7 @@ export default function AppPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo & Brand */}
-            <div className="flex items-center gap-3 cursor-pointer" onClick={() => router.push('/app')}>
+            <div className="flex items-center gap-3 cursor-pointer" onClick={() => router.push('/landing')}>
               <div className={`relative w-10 h-10 flex items-center justify-center rounded-full shadow-lg backdrop-blur-sm border transition-all duration-500 ${
                 isDarkMode 
                   ? 'bg-gradient-to-br from-purple-500/20 to-pink-500/20 border-purple-500/30' 
@@ -483,19 +568,123 @@ export default function AppPage() {
             {/* Content Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredContent.map((item) => (
-                <div key={item.id} className="bg-white/5 backdrop-blur-md rounded-xl border border-white/10 p-6 hover:bg-white/10 transition-all duration-200 group cursor-pointer">
+                <div key={item.id} className={`backdrop-blur-md rounded-xl border p-6 hover:scale-105 transition-all duration-200 group cursor-pointer relative ${
+                  isDarkMode 
+                    ? 'bg-white/5 border-white/10 hover:bg-white/10' 
+                    : 'bg-white/60 border-gray-200/50 hover:bg-white/80'
+                }`}>
                   <div className="flex items-start justify-between mb-4">
                     <div className={`w-10 h-10 rounded-lg ${getTypeColor(item.type)} flex items-center justify-center`}>
                       {getTypeIcon(item.type)}
                     </div>
-                    <button className="opacity-0 group-hover:opacity-100 p-1 hover:bg-white/10 rounded transition-all duration-200">
-                      <MoreVertical className="w-4 h-4 text-gray-400" />
-                    </button>
+                    <div className="relative">
+                      <button 
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setShowDropdownId(showDropdownId === item.id ? null : item.id)
+                        }}
+                        className={`opacity-0 group-hover:opacity-100 p-1 rounded transition-all duration-200 ${
+                          isDarkMode ? 'hover:bg-white/10' : 'hover:bg-gray-100'
+                        }`}
+                      >
+                        <MoreVertical className={`w-4 h-4 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`} />
+                      </button>
+                      
+                      {/* Dropdown Menu */}
+                      {showDropdownId === item.id && (
+                        <div className={`absolute right-0 top-8 w-48 rounded-lg shadow-lg border z-50 ${
+                          isDarkMode 
+                            ? 'bg-gray-800 border-gray-700' 
+                            : 'bg-white border-gray-200'
+                        }`}>
+                          <div className="py-1">
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                handleViewContent(item)
+                                setShowDropdownId(null)
+                              }}
+                              className={`flex items-center gap-2 w-full px-4 py-2 text-sm transition-colors ${
+                                isDarkMode 
+                                  ? 'text-gray-300 hover:bg-gray-700' 
+                                  : 'text-gray-700 hover:bg-gray-100'
+                              }`}
+                            >
+                              <Eye className="w-4 h-4" />
+                              Görüntüle
+                            </button>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                handleCopyContent(item.content)
+                                setShowDropdownId(null)
+                              }}
+                              className={`flex items-center gap-2 w-full px-4 py-2 text-sm transition-colors ${
+                                isDarkMode 
+                                  ? 'text-gray-300 hover:bg-gray-700' 
+                                  : 'text-gray-700 hover:bg-gray-100'
+                              }`}
+                            >
+                              <Copy className="w-4 h-4" />
+                              Kopyala
+                            </button>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                handleShareContent(item)
+                                setShowDropdownId(null)
+                              }}
+                              className={`flex items-center gap-2 w-full px-4 py-2 text-sm transition-colors ${
+                                isDarkMode 
+                                  ? 'text-gray-300 hover:bg-gray-700' 
+                                  : 'text-gray-700 hover:bg-gray-100'
+                              }`}
+                            >
+                              <Share2 className="w-4 h-4" />
+                              Paylaş
+                            </button>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                router.push(`/create?edit=${item.id}`)
+                                setShowDropdownId(null)
+                              }}
+                              className={`flex items-center gap-2 w-full px-4 py-2 text-sm transition-colors ${
+                                isDarkMode 
+                                  ? 'text-gray-300 hover:bg-gray-700' 
+                                  : 'text-gray-700 hover:bg-gray-100'
+                              }`}
+                            >
+                              <Edit3 className="w-4 h-4" />
+                              Düzenle
+                            </button>
+                            <hr className={`my-1 ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`} />
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                handleDeleteContent(item.id)
+                                setShowDropdownId(null)
+                              }}
+                              className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-400 hover:bg-red-500/10 transition-colors"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                              Sil
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                  <h3 className="font-semibold text-white mb-2 line-clamp-2">{item.title}</h3>
-                  <p className="text-sm text-gray-400 mb-4 line-clamp-3">{item.content}</p>
+                  <h3 className={`font-semibold mb-2 line-clamp-2 transition-colors duration-500 ${
+                    isDarkMode ? 'text-white' : 'text-gray-800'
+                  }`}>{item.title}</h3>
+                  <p className={`text-sm mb-4 line-clamp-3 transition-colors duration-500 ${
+                    isDarkMode ? 'text-gray-400' : 'text-gray-600'
+                  }`}>{item.content}</p>
                   <div className="flex items-center justify-between">
-                    <div className="text-xs text-gray-500">{item.wordCount} kelime</div>
+                    <div className={`text-xs transition-colors duration-500 ${
+                      isDarkMode ? 'text-gray-500' : 'text-gray-500'
+                    }`}>{item.wordCount} kelime</div>
                     <div className={`px-2 py-1 rounded text-xs font-medium ${
                       item.status === 'completed' ? 'bg-green-600/20 text-green-400' : 'bg-yellow-600/20 text-yellow-400'
                     }`}>
@@ -503,15 +692,45 @@ export default function AppPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2 mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                    <button className="flex items-center gap-1 px-2 py-1 text-xs text-gray-400 hover:text-white transition-colors duration-200">
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleViewContent(item)
+                      }}
+                      className={`flex items-center gap-1 px-2 py-1 text-xs transition-colors duration-200 ${
+                        isDarkMode 
+                          ? 'text-gray-400 hover:text-white' 
+                          : 'text-gray-600 hover:text-gray-800'
+                      }`}
+                    >
                       <Eye className="w-3 h-3" />
                       Görüntüle
                     </button>
-                    <button className="flex items-center gap-1 px-2 py-1 text-xs text-gray-400 hover:text-white transition-colors duration-200">
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleCopyContent(item.content)
+                      }}
+                      className={`flex items-center gap-1 px-2 py-1 text-xs transition-colors duration-200 ${
+                        isDarkMode 
+                          ? 'text-gray-400 hover:text-white' 
+                          : 'text-gray-600 hover:text-gray-800'
+                      }`}
+                    >
                       <Copy className="w-3 h-3" />
                       Kopyala
                     </button>
-                    <button className="flex items-center gap-1 px-2 py-1 text-xs text-gray-400 hover:text-white transition-colors duration-200">
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleShareContent(item)
+                      }}
+                      className={`flex items-center gap-1 px-2 py-1 text-xs transition-colors duration-200 ${
+                        isDarkMode 
+                          ? 'text-gray-400 hover:text-white' 
+                          : 'text-gray-600 hover:text-gray-800'
+                      }`}
+                    >
                       <Share2 className="w-3 h-3" />
                       Paylaş
                     </button>
@@ -715,6 +934,114 @@ export default function AppPage() {
           className="fixed inset-0 z-40" 
           onClick={() => setShowUserMenu(false)}
         ></div>
+      )}
+
+      {/* Click outside to close dropdown */}
+      {showDropdownId && (
+        <div 
+          className="fixed inset-0 z-40" 
+          onClick={() => setShowDropdownId(null)}
+        ></div>
+      )}
+
+      {/* Content View Modal */}
+      {showContentModal && selectedContent && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className={`max-w-4xl w-full max-h-[90vh] overflow-hidden rounded-xl border shadow-2xl ${
+            isDarkMode 
+              ? 'bg-gray-900 border-gray-700' 
+              : 'bg-white border-gray-200'
+          }`}>
+            {/* Modal Header */}
+            <div className={`flex items-center justify-between p-6 border-b ${
+              isDarkMode ? 'border-gray-700' : 'border-gray-200'
+            }`}>
+              <div className="flex items-center gap-3">
+                <div className={`w-10 h-10 rounded-lg ${getTypeColor(selectedContent.type)} flex items-center justify-center`}>
+                  {getTypeIcon(selectedContent.type)}
+                </div>
+                <div>
+                  <h2 className={`text-xl font-semibold ${
+                    isDarkMode ? 'text-white' : 'text-gray-800'
+                  }`}>{selectedContent.title}</h2>
+                  <div className={`text-sm ${
+                    isDarkMode ? 'text-gray-400' : 'text-gray-600'
+                  }`}>
+                    {selectedContent.wordCount} kelime • {selectedContent.createdAt}
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => handleCopyContent(selectedContent.content)}
+                  className={`p-2 rounded-lg transition-colors ${
+                    isDarkMode 
+                      ? 'text-gray-400 hover:text-white hover:bg-gray-800' 
+                      : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
+                  }`}
+                >
+                  <Copy className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => handleShareContent(selectedContent)}
+                  className={`p-2 rounded-lg transition-colors ${
+                    isDarkMode 
+                      ? 'text-gray-400 hover:text-white hover:bg-gray-800' 
+                      : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
+                  }`}
+                >
+                  <Share2 className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => setShowContentModal(false)}
+                  className={`p-2 rounded-lg transition-colors ${
+                    isDarkMode 
+                      ? 'text-gray-400 hover:text-white hover:bg-gray-800' 
+                      : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
+                  }`}
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+            
+            {/* Modal Content */}
+            <div className="p-6 overflow-y-auto max-h-[70vh]">
+              <div className={`prose max-w-none ${
+                isDarkMode ? 'prose-invert' : ''
+              }`}>
+                <div className={`whitespace-pre-wrap text-sm leading-relaxed ${
+                  isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                }`}>
+                  {selectedContent.content}
+                </div>
+              </div>
+            </div>
+            
+            {/* Modal Footer */}
+            <div className={`flex items-center justify-between p-6 border-t ${
+              isDarkMode ? 'border-gray-700' : 'border-gray-200'
+            }`}>
+              <div className={`px-3 py-1 rounded text-sm font-medium ${
+                selectedContent.status === 'completed' ? 'bg-green-600/20 text-green-400' : 'bg-yellow-600/20 text-yellow-400'
+              }`}>
+                {selectedContent.status === 'completed' ? 'Tamamlandı' : 'Taslak'}
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => router.push(`/create?edit=${selectedContent.id}`)}
+                  className={`px-4 py-2 rounded-lg transition-colors ${
+                    isDarkMode 
+                      ? 'bg-purple-600 hover:bg-purple-700 text-white' 
+                      : 'bg-blue-600 hover:bg-blue-700 text-white'
+                  }`}
+                >
+                  Düzenle
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   )
