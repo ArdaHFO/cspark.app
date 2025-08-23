@@ -391,11 +391,24 @@ ${scriptType === 'youtube' ? `
 - Her bölümün kelime sayısını ayrı ayrı kontrol et
 - Bölüm sonlarında kelime sayısını parantez içinde belirt
 
-ÖRNEK KELIME SAYMA: "Bu harika bir video olacak" = 6 kelime
+KRİTİK KURAL - KELİME SAYISI KONTROLÜ:
+- Yazdığın her bölümde KELİMELERİ SAY!
+- Örnek: "Bu harika bir video olacak bugün" = 6 kelime
+- Her bölümün sonunda şunu yaz: (Gerçek kelime sayısı: X kelime)
+- Eğer hedef kelime sayısına ulaşmadıysan, DAHA FAZLA METIN YAZ!
+- Eğer hedef kelime sayısını aştıysan, METNİ KISALT!
+
+ZORUNLU KONTROL LİSTESİ:
+✅ Her bölümde tam hedef kelime sayısına ulaştım mı?
+✅ Toplam kelime sayısı ${scriptType === 'youtube' ? `${scriptDuration * 160}` : `${Math.round(scriptDuration * 60 * 2.8)}`} kelime mi?
+✅ Her bölümün sonunda gerçek kelime sayısını yazdım mı?
+✅ Konuşma metni akıcı ve doğal mı?
+
+ÖRNEK KELIME SAYMA: "Bu harika bir video olacak bugün sizlerle" = 8 kelime
 
 Lütfen yukarıdaki formatı KESINLIKLE takip ederek, toplam ${scriptType === 'youtube' 
   ? `${scriptDuration * 160} kelime` 
-  : `${Math.round(scriptDuration * 60 * 2.8)} kelime`} içeren profesyonel script oluştur.`
+  : `${Math.round(scriptDuration * 60 * 2.8)} kelime`} içeren profesyonel script oluştur. HER BÖLÜMDE KELİME SAYISINI GERÇEKTEN SAY VE DOĞRULA!`
       
       // Use correct task based on script type
       const taskType = (scriptType === 'shorts' ? 'shorts' : 'youtube') as 'shorts' | 'youtube'
