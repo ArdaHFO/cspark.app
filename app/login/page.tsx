@@ -42,7 +42,7 @@ export default function LoginPage() {
       phone: ''
     })
     setShowPassword(false)
-  }, [isLogin])
+  }, [isLogin, formData.email, rememberMe])
 
     const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()

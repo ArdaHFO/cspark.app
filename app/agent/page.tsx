@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import { generateContent } from '@/lib/api'
@@ -153,7 +153,7 @@ const templateConfigs: { [key: string]: TemplateConfig } = {
   }
 }
 
-export default function AgentPage() {
+function AgentPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [isDarkMode, setIsDarkMode] = useState(true)
@@ -572,5 +572,21 @@ export default function AgentPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+function LoadingFallback() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
+      <div className="text-white">Yükleniyor...</div>
+    </div>
+  )
+}
+
+export default function AgentPage() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <AgentPageContent />
+    </Suspense>
   )
 }
