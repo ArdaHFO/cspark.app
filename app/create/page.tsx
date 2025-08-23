@@ -336,36 +336,78 @@ SCRIPT TALIMATLARI:
 - Hedef Süre: ${durationText}
 - Ton: ${selectedPersona ? getPersonaTone(selectedPersona) : 'casual'}
 - Dil: Türkçe
-- Format: Detaylı konuşma metni ve sahne talimatları
+- Format: Tam konuşma metni (kelime sayısı ile birlikte)
 
-KELIME SAYISI HEDEFİ:
-- ${scriptType === 'youtube' 
-  ? `${scriptDuration} dakika için yaklaşık ${scriptDuration * 160} kelime (dakikada 160 kelime)` 
-  : `${scriptDuration * 60} saniye için yaklaşık ${Math.round(scriptDuration * 60 * 2.8)} kelime (saniyede 2.8 kelime)`}
-
-ÖZEL İSTEKLER:
-- Süreye uygun kelime sayısı hedefine odaklan
-- Her sahne için detaylı görsel açıklamaları
-- Timing bilgileri ve sahne geçişleri
-- Konuşma metninin kelime sayısı hesaplaması
-- Engagement optimizasyonu
-- ${scriptType === 'youtube' && scriptDuration >= 10 ? 'Uzun video için bölümler halinde organize et' : ''}
-
-Lütfen yukarıdaki konuyla ilgili ${durationText} süreli, tam ${scriptType === 'youtube' 
+KRİTİK KELIME SAYISI HEDEFİ:
+- TOPLAM HEDEF: ${scriptType === 'youtube' 
   ? `${scriptDuration * 160} kelime` 
-  : `${Math.round(scriptDuration * 60 * 2.8)} kelime`} içeren profesyonel ${scriptType === 'youtube' ? 'YouTube video' : 'Shorts/TikTok'} senaryosu oluştur. Kelime sayısını mutlaka hedefe ulaştır.`
+  : `${Math.round(scriptDuration * 60 * 2.8)} kelime`}
+- Bu sayı MUTLAKA tutturulmalıdır!
+
+ZORUNLU FORMAT:
+${scriptType === 'youtube' ? `
+### 📺 VIDEO SENARYOSU (${scriptDuration} dakika)
+
+### 🎯 HOOK BÖLÜMÜ (0-30 saniye):
+**Kelime Sayısı: [80 kelime]**
+[Tam konuşma metni buraya...]
+
+### 📖 GİRİŞ VE PROBLEM TANIMI (30 saniye - 2 dakika):
+**Kelime Sayısı: [${Math.round(scriptDuration * 160 * 0.15)} kelime]**
+[Tam konuşma metni buraya...]
+
+### 🎮 ANA İÇERİK BÖLÜMÜ (2 dakika - ${scriptDuration - 2} dakika):
+**Kelime Sayısı: [${Math.round(scriptDuration * 160 * 0.7)} kelime]**
+[Tam konuşma metni buraya...]
+
+### 🎯 SONUÇ VE CALL-TO-ACTION (Son 1 dakika):
+**Kelime Sayısı: [${Math.round(scriptDuration * 160 * 0.15)} kelime]**
+[Tam konuşma metni buraya...]
+
+### 📊 TOPLAM KELİME SAYISI:
+**Kontrol: [TOPLAM MUTLAKA ${scriptDuration * 160} KELİME OLMALI]**` 
+: `
+### 📱 SHORTS SENARYOSU (${scriptDuration * 60} saniye)
+
+### 🎯 HOOK (0-3 saniye):
+**Kelime Sayısı: [${Math.round(scriptDuration * 60 * 2.8 * 0.1)} kelime]**
+[Tam konuşma metni...]
+
+### 📖 ANA İÇERİK (3-${scriptDuration * 60 - 5} saniye):
+**Kelime Sayısı: [${Math.round(scriptDuration * 60 * 2.8 * 0.8)} kelime]**
+[Tam konuşma metni...]
+
+### 🎯 KAPANIŞ (Son 5 saniye):
+**Kelime Sayısı: [${Math.round(scriptDuration * 60 * 2.8 * 0.1)} kelime]**
+[Tam konuşma metni...]
+
+### 📊 TOPLAM KELİME SAYISI:
+**Kontrol: [TOPLAM MUTLAKA ${Math.round(scriptDuration * 60 * 2.8)} KELİME OLMALI]**`}
+
+ÖNEMLİ UYARILAR:
+- Her bölümde belirtilen kelime sayılarını TAM OLARAK tuttur
+- Konuşma metni akıcı ve doğal olmalı
+- Toplam kelime sayısı MUTLAKA hedefi bulmalı
+- Her bölümün kelime sayısını ayrı ayrı kontrol et
+- Bölüm sonlarında kelime sayısını parantez içinde belirt
+
+ÖRNEK KELIME SAYMA: "Bu harika bir video olacak" = 6 kelime
+
+Lütfen yukarıdaki formatı KESINLIKLE takip ederek, toplam ${scriptType === 'youtube' 
+  ? `${scriptDuration * 160} kelime` 
+  : `${Math.round(scriptDuration * 60 * 2.8)} kelime`} içeren profesyonel script oluştur.`
       
       // Use correct task based on script type
       const taskType = (scriptType === 'shorts' ? 'shorts' : 'youtube') as 'shorts' | 'youtube'
       
-      // Calculate max tokens based on script type and duration - increased for longer content
+      // Calculate max tokens based on script type and duration - 2x increased for longer content
       let maxTokens;
       if (scriptType === 'shorts') {
-        // Shorts için token hesaplaması (saniye başına 8 token)
-        maxTokens = Math.max(800, Math.min(scriptDuration * 60 * 8, 3000));
+        // Shorts için token hesaplaması (saniye başına 16 token - 2x artırıldı)
+        maxTokens = Math.max(1600, Math.min(scriptDuration * 60 * 16, 6000));
       } else {
-        // YouTube için token hesaplaması (dakika başına 400 token)
-        maxTokens = Math.max(1200, Math.min(scriptDuration * 400, 8000));
+        // YouTube için token hesaplaması (dakika başına 800 token - 2x artırıldı)
+        maxTokens = Math.max(2400, Math.min(scriptDuration * 800, 16000));
       }
       
       // Calculate duration for API call
