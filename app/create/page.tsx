@@ -338,26 +338,34 @@ SCRIPT TALIMATLARI:
 - Dil: Türkçe
 - Format: Detaylı konuşma metni ve sahne talimatları
 
+KELIME SAYISI HEDEFİ:
+- ${scriptType === 'youtube' 
+  ? `${scriptDuration} dakika için yaklaşık ${scriptDuration * 160} kelime (dakikada 160 kelime)` 
+  : `${scriptDuration * 60} saniye için yaklaşık ${Math.round(scriptDuration * 60 * 2.8)} kelime (saniyede 2.8 kelime)`}
+
 ÖZEL İSTEKLER:
-- Süreye uygun kelime sayısı (${scriptType === 'youtube' ? 'dakikada 150-180 kelime' : 'saniyede 2.5-3 kelime'})
+- Süreye uygun kelime sayısı hedefine odaklan
 - Her sahne için detaylı görsel açıklamaları
 - Timing bilgileri ve sahne geçişleri
 - Konuşma metninin kelime sayısı hesaplaması
 - Engagement optimizasyonu
+- ${scriptType === 'youtube' && scriptDuration >= 10 ? 'Uzun video için bölümler halinde organize et' : ''}
 
-Lütfen yukarıdaki konuyla ilgili ${durationText} süreli, sadece script ve sahne talimatları içeren profesyonel ${scriptType === 'youtube' ? 'YouTube video' : 'Shorts/TikTok'} senaryosu oluştur. SEO ve metadata bilgileri dahil etme.`
+Lütfen yukarıdaki konuyla ilgili ${durationText} süreli, tam ${scriptType === 'youtube' 
+  ? `${scriptDuration * 160} kelime` 
+  : `${Math.round(scriptDuration * 60 * 2.8)} kelime`} içeren profesyonel ${scriptType === 'youtube' ? 'YouTube video' : 'Shorts/TikTok'} senaryosu oluştur. Kelime sayısını mutlaka hedefe ulaştır.`
       
       // Use correct task based on script type
       const taskType = (scriptType === 'shorts' ? 'shorts' : 'youtube') as 'shorts' | 'youtube'
       
-      // Calculate max tokens based on script type and duration
+      // Calculate max tokens based on script type and duration - increased for longer content
       let maxTokens;
       if (scriptType === 'shorts') {
-        // Shorts are more detailed with visual descriptions, need more tokens per minute
-        maxTokens = Math.min(scriptDuration * 400, 2000); // Max 2000 for shorts
+        // Shorts için token hesaplaması (saniye başına 8 token)
+        maxTokens = Math.max(800, Math.min(scriptDuration * 60 * 8, 3000));
       } else {
-        // YouTube videos need comprehensive content
-        maxTokens = Math.min(scriptDuration * 300, 4000); // Max 4000 for YouTube
+        // YouTube için token hesaplaması (dakika başına 400 token)
+        maxTokens = Math.max(1200, Math.min(scriptDuration * 400, 8000));
       }
       
       // Calculate duration for API call

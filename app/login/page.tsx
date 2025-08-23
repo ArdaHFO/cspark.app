@@ -33,16 +33,27 @@ export default function LoginPage() {
 
   // Form verilerini temizle when switching tabs
   useEffect(() => {
-    const savedEmail = rememberMe ? formData.email : ''
-    setFormData({
-      email: savedEmail,
-      password: '',
-      confirmPassword: '',
-      name: '',
-      phone: ''
-    })
+    if (isLogin) {
+      // Login modunda: password hariç diğer alanları temizle
+      setFormData(prev => ({
+        email: prev.email, // Email'i koru
+        password: '',
+        confirmPassword: '',
+        name: '',
+        phone: ''
+      }))
+    } else {
+      // Register modunda: tüm alanları temizle
+      setFormData({
+        email: '',
+        password: '',
+        confirmPassword: '',
+        name: '',
+        phone: ''
+      })
+    }
     setShowPassword(false)
-  }, [isLogin, formData.email, rememberMe])
+  }, [isLogin])
 
     const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()

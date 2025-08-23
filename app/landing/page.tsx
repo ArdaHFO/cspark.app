@@ -142,7 +142,7 @@ const LoginButton = () => {
   const router = useRouter()
 
   return (
-    <div className="fixed top-12 right-6 z-50">
+    <div className="fixed top-12 right-6 md:right-12 lg:right-20 z-50">
       <button
         onClick={() => router.push('/login')}
         className="px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-medium rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-lg border border-purple-500/50 group backdrop-blur-sm"
